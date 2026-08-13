@@ -1,64 +1,41 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SK·K 편성 제한 기준 및 PGM 원인 분리 분석</title>
-  <style>
-    :root{--ink:#20242a;--muted:#66707b;--line:#d8dee4;--soft:#f6f8fa;--blue:#0969da;--red:#cf222e;--green:#1a7f37;--orange:#bc4c00;--purple:#8250df}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",Arial,sans-serif;font-size:15px;line-height:1.65}main{width:min(1040px,calc(100% - 40px));margin:32px auto 80px}h1{margin:0 0 8px;padding-bottom:11px;border-bottom:1px solid var(--line);font-size:30px;line-height:1.35}h2{margin:42px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--line);font-size:22px}h3{margin:24px 0 10px;font-size:17px}p{margin:8px 0}.subtitle,.note{color:var(--muted);font-size:13px}.meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin:13px 0 0;padding:0;color:var(--muted);font-size:13px;list-style:none}.meta strong{color:var(--ink)}.toc{display:flex;flex-wrap:wrap;gap:8px 18px;margin:22px 0 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px}.toc a{color:var(--blue);text-decoration:none}.lead{margin:25px 0 0;font-size:16px;line-height:1.75}.summary{display:grid;grid-template-columns:repeat(5,1fr);margin:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.metric{padding:13px 10px;border-right:1px solid var(--line)}.metric:first-child{padding-left:0}.metric:last-child{border-right:0}.metric span{display:block;color:var(--muted);font-size:12px}.metric b{display:block;margin-top:2px;font-size:18px}.neg{color:var(--red)!important}.pos{color:var(--green)!important}.callout{margin:18px 0;padding:13px 15px;border-left:3px solid var(--blue);background:var(--soft);font-size:14px}.callout.risk{border-left-color:var(--red)}.callout.good{border-left-color:var(--green)}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}.cards article{padding:14px 15px;border:1px solid var(--line);border-radius:7px}.cards h3{margin:0 0 5px;font-size:14px}.cards p{margin:0;color:#424a53;font-size:13px}.table-wrap{overflow-x:auto;margin:12px 0 22px;border-top:1px solid var(--line)}table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.45}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}tbody tr:hover{background:#f8fafc}.chart-block{margin:16px 0 28px;padding:17px 0 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.chart{width:100%;min-height:280px}.chart svg{display:block;width:100%;height:auto;overflow:visible}.badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:700}.badge.red{background:#ffebe9;color:#a40e26}.badge.green{background:#dafbe1;color:#116329}.badge.orange{background:#fff1e5;color:#953800}.badge.blue{background:#ddf4ff;color:#0550ae}.badge.gray{background:#f6f8fa;color:#57606a}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}.rules article{padding:15px;border:1px solid var(--line);border-radius:7px}.rules h3{margin:0 0 8px;font-size:15px}.rules ul{margin:0;padding-left:18px;font-size:13px}.rules li{margin:5px 0}.selector{display:flex;flex-wrap:wrap;gap:6px;margin:13px 0}.selector button{padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#424a53;font:inherit;font-size:12px;cursor:pointer}.selector button.active{border-color:var(--blue);background:#ddf4ff;color:#0550ae;font-weight:700}.method{padding-left:20px;font-size:13px;color:#424a53}.method li{margin:6px 0}footer{margin-top:42px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}@media(max-width:760px){main{width:min(100% - 28px,1040px)}h1{font-size:25px}.summary{grid-template-columns:repeat(2,1fr)}.metric{border-bottom:1px solid var(--line)}.cards,.rules{grid-template-columns:1fr}.chart{min-height:230px}}@media print{main{width:100%;margin:0}.toc,.selector{display:none}.chart-block,.table-wrap,.cards,.rules{break-inside:avoid}}
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SK 및 K 개별 편성 제한 기준 보고서</title>
+<style>
+:root{--ink:#20242a;--muted:#66707b;--line:#d8dee4;--soft:#f6f8fa;--blue:#0969da;--red:#cf222e;--green:#1a7f37;--orange:#bc4c00;--purple:#8250df}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",Arial,sans-serif;font-size:15px;line-height:1.65}main{width:min(1040px,calc(100% - 40px));margin:32px auto 80px}h1{margin:0 0 8px;padding-bottom:11px;border-bottom:1px solid var(--line);font-size:30px;line-height:1.35}h2{margin:42px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--line);font-size:22px}h3{margin:24px 0 10px;font-size:17px}p{margin:8px 0}.subtitle,.note{color:var(--muted);font-size:13px}.meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin:13px 0 0;padding:0;color:var(--muted);font-size:13px;list-style:none}.meta strong{color:var(--ink)}.toc{display:flex;flex-wrap:wrap;gap:8px 18px;margin:22px 0 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px}.toc a{color:var(--blue);text-decoration:none}.lead{margin:25px 0 0;font-size:16px;line-height:1.75}.summary{display:grid;grid-template-columns:repeat(5,1fr);margin:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.metric{padding:13px 10px;border-right:1px solid var(--line)}.metric:first-child{padding-left:0}.metric:last-child{border-right:0}.metric span{display:block;color:var(--muted);font-size:12px}.metric b{display:block;margin-top:2px;font-size:18px}.neg{color:var(--red)!important}.pos{color:var(--green)!important}.callout{margin:18px 0;padding:13px 15px;border-left:3px solid var(--blue);background:var(--soft);font-size:14px}.callout.risk{border-left-color:var(--red)}.callout.good{border-left-color:var(--green)}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}.cards article{padding:14px 15px;border:1px solid var(--line);border-radius:7px}.cards h3{margin:0 0 5px;font-size:14px}.cards p{margin:0;color:#424a53;font-size:13px}.table-wrap{overflow-x:auto;margin:12px 0 22px;border-top:1px solid var(--line)}table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.45}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}tbody tr:hover{background:#f8fafc}.chart-block{margin:16px 0 28px;padding:17px 0 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.chart{width:100%;min-height:280px}.chart svg{display:block;width:100%;height:auto;overflow:visible}.badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:700}.badge.red{background:#ffebe9;color:#a40e26}.badge.green{background:#dafbe1;color:#116329}.badge.orange{background:#fff1e5;color:#953800}.badge.blue{background:#ddf4ff;color:#0550ae}.badge.gray{background:#f6f8fa;color:#57606a}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}.rules article{padding:15px;border:1px solid var(--line);border-radius:7px}.rules h3{margin:0 0 8px;font-size:15px}.rules ul{margin:0;padding-left:18px;font-size:13px}.rules li{margin:5px 0}.method{padding-left:20px;font-size:13px;color:#424a53}.method li{margin:6px 0}footer{margin-top:42px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}@media(max-width:760px){main{width:min(100% - 28px,1040px)}h1{font-size:25px}.summary{grid-template-columns:repeat(2,1fr)}.metric{border-bottom:1px solid var(--line)}.cards,.rules{grid-template-columns:1fr}.chart{min-height:230px}}@media print{main{width:100%;margin:0}.toc{display:none}.chart-block,.table-wrap,.cards,.rules{break-inside:avoid}}
+</style>
 </head>
 <body><main>
-  <header>
-    <h1>SK·K 편성 제한 기준 및 PGM 원인 분리 분석</h1>
-    <p class="subtitle">홈쇼핑사 문제인지, 건식당 등 PGM 문제인지 구분하기 위한 별도 보고서</p>
-    <ul class="meta"><li>실적 <strong>2026.01.01~08.12</strong></li><li>대상 <strong>비용을 지급한 전체 유가 PPL</strong></li><li>금액 <strong>원 단위</strong></li><li>손익 <strong>원본 S열 이익금</strong></li></ul>
-    <nav class="toc"><a href="#conclusion">1. 결론</a><a href="#pgm">2. PGM 통제 비교</a><a href="#risk">3. 제한 조합</a><a href="#rule">4. 적용 기준</a><a href="#future">5. 향후 편성</a></nav>
-  </header>
+<header><h1>SK 및 K 개별 편성 제한 기준 보고서</h1><p class="subtitle">SK와 K를 합산하지 않고 각 홈쇼핑사의 PGM 성과와 편성 기준을 별도로 분석</p><ul class="meta"><li>실적 <strong>2026.01.01~08.12</strong></li><li>대상 <strong>전체 유가 PPL</strong></li><li>비교군 <strong>SK·K 제외 홈쇼핑사</strong></li><li>금액 <strong>원 단위</strong></li></ul><nav class="toc"><a href="#sk">1. SK 분석</a><a href="#k">2. K 분석</a><a href="#risk">3. 개별 제한 조합</a><a href="#rule">4. 적용 기준</a><a href="#future">5. 향후 편성</a></nav></header>
+<p class="lead"><strong>결론:</strong> SK와 K 모두 손실이 크지만 성과 구조와 표본 수가 다릅니다. 따라서 합산 기준을 사용하지 않고 <strong>SK×PGM과 K×PGM을 각각 판정</strong>해야 합니다. 두 채널 모두 전체 금지가 아니라 반복 적자가 확인된 조합만 제한합니다.</p>
 
-  <p class="lead"><strong>핵심 판단:</strong> SK·K는 전체적으로 성과가 낮지만, 모든 PGM을 일괄 금지할 근거는 없습니다. <strong>SK·K에서도 흑자인 PGM은 유지하고, 동일 홈쇼핑사×PGM 조합이 반복 적자인 경우만 편성 제한</strong>하는 방식이 적절합니다.</p>
+<section id="sk"><h2>1. SK 개별 분석</h2><section class="summary" id="sk-kpis"></section>
+<div class="callout risk"><strong>SK 판단:</strong> 누적 손실은 –758,722,697원입니다. 동일 PGM 기준 비교가 가능한 11개 PGM에서 SK 61건은 –297,630,435원이었으며, 비교군의 PGM별 건당 성과를 같은 건수에 적용한 참고값은 +14,158,635원입니다.</div>
+<div class="cards"><article><h3>SK 제한 근거가 강한 PGM</h3><p>몸신의탄생·건식당·조선다큐·어벤져스·명의보감은 3건 이상, 건당 –1천만원 이하, 흑자율 25% 이하입니다.</p></article><article><h3>SK에서도 유지 가능한 PGM</h3><p>인생의연장전 9건 +73,558,305원, 잘살면좋잖아 5건 +33,302,872원입니다. SK 전체를 일괄 제외할 수 없는 근거입니다.</p></article></div>
+<div class="table-wrap"><table><thead><tr><th>PGM</th><th>SK 건수</th><th>SK 흑자율</th><th>SK 이익금(원)</th><th>SK 건당(원)</th><th>비교군 건수</th><th>비교군 건당(원)</th><th>진단</th></tr></thead><tbody id="sk-pgm"></tbody></table></div>
+<div class="chart-block"><h3>SK와 비교군의 PGM별 건당 손익</h3><p class="note">비교군은 SK·K를 제외한 홈쇼핑사입니다.</p><div id="sk-chart" class="chart"></div></div></section>
 
-  <section id="conclusion"><h2>1. 결론 요약</h2><section class="summary" id="kpis"></section>
-    <div class="callout risk"><strong>SK·K에 손실이 집중된 것은 사실입니다.</strong> SK·K 115건의 누적 손실은 –1,039,466,270원으로 전체 손실의 89.9%입니다. SK·K를 제외한 198건은 –116,268,982원으로 거의 손익분기 수준입니다.</div>
-    <div class="cards">
-      <article><h3>건식당: PGM 이슈 + SK·K 증폭</h3><p>전체 21건 –326,695,906원입니다. SK·K 11건은 –286,005,444원, 타 홈쇼핑사 10건은 –40,690,462원으로 PGM도 적자지만 SK·K에서 손실이 크게 확대됩니다.</p></article>
-      <article><h3>조선다큐: SK·K 조합 이슈</h3><p>SK·K 8건은 –113,515,183원인 반면 타 홈쇼핑사 10건은 +13,853,984원입니다. PGM 전체 중단보다 SK·K 편성을 제한할 근거가 강합니다.</p></article>
-      <article><h3>어벤져스: PGM 공통 이슈</h3><p>SK·K 5건 –75,262,746원, 타 홈쇼핑사 13건 –92,341,781원으로 양쪽 모두 적자입니다. SK·K 문제와 별개로 PGM 자체를 재검토해야 합니다.</p></article>
-      <article><h3>인생의연장전: 일괄 제외 대상 아님</h3><p>SK·K 14건은 +139,530,161원, 타 홈쇼핑사 43건은 +295,823,170원입니다. SK·K에서도 유지 가능한 PGM이 분명히 존재합니다.</p></article>
-    </div>
-    <div class="chart-block"><h3>홈쇼핑사 구분별 건당 평균 손익</h3><p class="note">SK와 K 모두 기타 홈쇼핑사 평균보다 낮습니다.</p><div id="channel-chart" class="chart"></div></div>
-  </section>
+<section id="k"><h2>2. K 개별 분석</h2><section class="summary" id="k-kpis"></section>
+<div class="callout risk"><strong>K 판단:</strong> 누적 손실은 –280,743,573원이며 흑자율은 17.1%로 SK보다 낮습니다. 동일 PGM 기준 비교가 가능한 6개 PGM에서 K 28건은 –199,241,571원이었으며 비교군 참고값은 +14,545,109원입니다.</div>
+<div class="cards"><article><h3>K 제한 근거가 강한 PGM</h3><p>건식당과 다큐플러스가 자동 제한 기준에 해당합니다. 특히 K×건식당 7건은 모두 적자이며 누적 –177,585,265원입니다.</p></article><article><h3>K에서도 유지 가능한 PGM</h3><p>인생의연장전 5건 +65,971,856원, 지킬박사 6건 +3,839,356원입니다. 다만 지킬박사는 건당 이익이 작아 조건부 관리가 필요합니다.</p></article></div>
+<div class="table-wrap"><table><thead><tr><th>PGM</th><th>K 건수</th><th>K 흑자율</th><th>K 이익금(원)</th><th>K 건당(원)</th><th>비교군 건수</th><th>비교군 건당(원)</th><th>진단</th></tr></thead><tbody id="k-pgm"></tbody></table></div>
+<div class="chart-block"><h3>K와 비교군의 PGM별 건당 손익</h3><p class="note">비교군은 SK·K를 제외한 홈쇼핑사입니다.</p><div id="k-chart" class="chart"></div></div></section>
 
-  <section id="pgm"><h2>2. 동일 PGM으로 통제한 비교</h2><p>SK·K와 타 홈쇼핑사에 모두 3건 이상 편성된 13개 PGM을 비교하면, 같은 PGM 구성에서도 SK·K의 손익이 더 낮았습니다. SK·K 실제 손익은 –563,538,655원이었으며, 타 홈쇼핑사의 PGM별 건당 성과를 같은 건수에 적용한 참고값은 +22,795,895원입니다.</p>
-    <div class="callout"><strong>해석 주의.</strong> 이 비교는 PGM 구성 차이를 줄인 참고 분석입니다. 아이템·시간대·비용 조건까지 완전히 같지는 않으므로 홈쇼핑사가 손실의 단독 원인이라고 단정하지 않습니다.</div>
-    <div class="table-wrap"><table><thead><tr><th>PGM</th><th>SK·K 건수</th><th>SK·K 이익금(원)</th><th>SK·K 건당(원)</th><th>타사 건수</th><th>타사 이익금(원)</th><th>타사 건당(원)</th><th>진단</th></tr></thead><tbody id="pgm-body"></tbody></table></div>
-    <div class="chart-block"><h3>주요 PGM 건당 손익 비교</h3><p class="note">왼쪽으로 길수록 건당 손실이 큽니다.</p><div id="pgm-chart" class="chart"></div></div>
-  </section>
+<section id="risk"><h2>3. 홈쇼핑사별 1차 편성 제한 조합</h2>
+<h3>SK 편성 제한 후보</h3><div class="table-wrap"><table><thead><tr><th>PGM</th><th>건수</th><th>흑자율</th><th>누적 이익금(원)</th><th>건당 이익금(원)</th><th>PPL비 차감 전 건당(원)</th><th>권고 PPL비 상한(원)</th></tr></thead><tbody id="sk-risk"></tbody></table></div>
+<h3>K 편성 제한 후보</h3><div class="table-wrap"><table><thead><tr><th>PGM</th><th>건수</th><th>흑자율</th><th>누적 이익금(원)</th><th>건당 이익금(원)</th><th>PPL비 차감 전 건당(원)</th><th>권고 PPL비 상한(원)</th></tr></thead><tbody id="k-risk"></tbody></table></div>
+<div class="callout risk"><strong>구조 변경이 필요한 조합:</strong> SK×몸신의탄생과 K×건식당은 PPL 비용 차감 전 평균 손익도 마이너스입니다. PPL 비용 인하만으로 흑자 전환이 어려워 아이템·시간대·판매조건을 바꾸기 전에는 편성을 보류합니다.</div></section>
 
-  <section id="risk"><h2>3. 1차 편성 제한 조합</h2><p>동일 홈쇼핑사×PGM 실적이 3건 이상이며, 건당 평균 –10,000,000원 이하이고 흑자율이 25% 이하인 조합입니다.</p>
-    <div class="table-wrap"><table><thead><tr><th>홈쇼핑사</th><th>PGM</th><th>건수</th><th>흑자율</th><th>누적 이익금(원)</th><th>건당 이익금(원)</th><th>PPL비 차감 전 건당(원)</th><th>권고 PPL비 상한(원)</th></tr></thead><tbody id="risk-body"></tbody></table></div>
-    <div class="callout risk"><strong>특히 주의할 조합.</strong> SK×몸신의탄생과 K×건식당은 PPL 비용을 제외하기 전에도 평균 손익이 마이너스입니다. 비용만 낮추는 방식으로는 해결되지 않으므로 아이템·시간대·판매조건을 바꾸기 전까지 편성하지 않는 것이 맞습니다.</div>
-  </section>
+<section id="rule"><h2>4. SK·K 개별 편성 기준안</h2><div class="rules"><article><h3><span class="badge red">편성 불가</span></h3><ul><li>해당 홈쇼핑사×PGM 3건 이상</li><li>건당 평균 –10,000,000원 이하</li><li>흑자율 25% 이하</li><li>각 채널에 따로 적용</li></ul></article><article><h3><span class="badge orange">조건부 승인</span></h3><ul><li>3건 이상이나 평균 손익 마이너스</li><li>권고 PPL비 상한 이내</li><li>손익분기 주문금액 사전 확인</li><li>아이템·시간대 변경 근거 필요</li></ul></article><article><h3><span class="badge green">유지 가능</span></h3><ul><li>해당 홈쇼핑사×PGM 3건 이상</li><li>건당 평균 손익 플러스</li><li>흑자율 50% 이상</li><li>기존 비용 범위 내 검토</li></ul></article></div>
+<div class="callout"><strong>권고 PPL비 상한:</strong> 해당 홈쇼핑사×PGM의 과거 ‘PPL비 차감 전 건당 평균이익’ × 80%. SK 실적으로 SK 상한을, K 실적으로 K 상한을 각각 산정합니다.</div></section>
 
-  <section id="rule"><h2>4. SK·K 편성 의사결정 기준안</h2>
-    <div class="rules">
-      <article><h3><span class="badge red">편성 불가</span></h3><ul><li>동일 홈쇼핑사×PGM 3건 이상</li><li>건당 평균 –10,000,000원 이하</li><li>흑자율 25% 이하</li><li>세 조건을 모두 충족하면 자동 보류</li></ul></article>
-      <article><h3><span class="badge orange">조건부 승인</span></h3><ul><li>3건 이상이나 누적·평균 손익이 마이너스</li><li>권고 PPL비 상한 이내에서만 검토</li><li>아이템·시간대 변경 근거와 손익분기 주문금액 필수</li></ul></article>
-      <article><h3><span class="badge green">유지 가능</span></h3><ul><li>동일 조합 3건 이상</li><li>건당 평균 손익 플러스</li><li>흑자율 50% 이상</li><li>기존 비용 범위 내 재편성 가능</li></ul></article>
-    </div>
-    <div class="callout"><strong>권고 PPL비 상한 산식:</strong> 과거 동일 조합의 ‘PPL비 차감 전 건당 평균이익’ × 80%. 20% 안전 여유를 남기는 기준이며, PPL비 차감 전 손익 자체가 마이너스라면 상한은 0원으로 봅니다.</div>
-    <ol class="method"><li>표본이 1~2건인 조합은 바로 금지하지 않고 신규·표본부족으로 분류합니다.</li><li>표본부족 편성은 손익분기 주문금액과 비용 상한을 사전 승인받고 1회 테스트 후 재평가합니다.</li><li>PGM뿐 아니라 아이템이 바뀌면 별도 조합으로 검증하되, 기존 적자 PGM의 위험 등급은 유지합니다.</li><li>월 1회 최근 실적을 추가해 기준을 재산정하고, 3건이 쌓이면 자동 기준을 적용합니다.</li></ol>
-  </section>
+<section id="future"><h2>5. 향후 편성 개별 적용 결과</h2>
+<h3>향후 SK 편성</h3><section class="summary" id="sk-future-kpis"></section><div class="callout risk"><strong>SK 즉시 보류 검토:</strong> 명의보감 2건, 비용 합계 28,500,000원입니다.</div><div class="table-wrap"><table><thead><tr><th>일자</th><th>PGM</th><th>아이템</th><th>구분</th><th>PPL 비용(원)</th><th>판정</th><th>과거 근거</th></tr></thead><tbody id="sk-future"></tbody></table></div>
+<h3>향후 K 편성</h3><section class="summary" id="k-future-kpis"></section><div class="callout risk"><strong>K 즉시 보류 검토:</strong> 다큐플러스 2건, 비용 합계 72,000,000원입니다.</div><div class="table-wrap"><table><thead><tr><th>일자</th><th>PGM</th><th>아이템</th><th>구분</th><th>PPL 비용(원)</th><th>판정</th><th>과거 근거</th></tr></thead><tbody id="k-future"></tbody></table></div></section>
 
-  <section id="future"><h2>5. 향후 SK·K 편성 적용 결과</h2><section class="summary" id="future-kpis"></section>
-    <p>8월 13일 이후 원본에 등록된 SK·K 유가 PPL 57건, 예정 비용 1,133,600,000원에 위 기준을 적용했습니다.</p>
-    <div class="callout risk"><strong>즉시 보류 검토 4건:</strong> SK×명의보감 2건과 K×다큐플러스 2건입니다. 모두 현재 권고 PPL비 상한을 초과합니다.</div>
-    <div id="filter" class="selector"></div><div class="table-wrap"><table><thead><tr><th>일자</th><th>홈쇼핑사</th><th>PGM</th><th>아이템</th><th>구분</th><th>PPL 비용(원)</th><th>정책 판정</th><th>과거 근거</th></tr></thead><tbody id="future-body"></tbody></table></div>
-  </section>
-
-  <h2>산정 기준</h2><ul class="method"><li>X열 PPL PGM이 있고 AB열 PPL 비용이 0원보다 큰 2026년 실적을 사용했습니다.</li><li>본방과 유가재방을 모두 포함했으며, 손익은 원본 S열 이익금입니다.</li><li>분석 결과는 편성 통제를 위한 내부 기준안이며, 인과관계를 확정하는 통계 검정은 아닙니다.</li></ul>
-  <footer>원본: 방송현황종합 2026 · 작성 기준일 2026년 8월 13일</footer>
+<h2>산정 기준과 주의사항</h2><ul class="method"><li>SK와 K의 건수·손익·흑자율·PGM 판정을 합산하지 않았습니다.</li><li>각 채널의 비교군은 SK와 K를 모두 제외한 홈쇼핑사 198건입니다.</li><li>표본 1~2건은 자동 금지하지 않고 신규·표본부족으로 분류합니다.</li><li>본방과 유가재방을 모두 포함했으며 손익은 원본 S열 이익금입니다.</li></ul><footer>원본: 방송현황종합 2026 · 작성 기준일 2026년 8월 13일</footer>
 </main>
 <script>
 const DATA={
@@ -117,16 +94,6 @@ const DATA={
   "rows": [
     {
       "pgm": "건식당",
-      "total": {
-        "count": 21,
-        "wins": 4,
-        "sales": 1613863819,
-        "cost": 450900000,
-        "profit": -326695906,
-        "avgProfit": -15556948,
-        "winRate": 0.19047619047619047,
-        "margin": -0.20243090039804654
-      },
       "sk": {
         "count": 4,
         "wins": 1,
@@ -147,16 +114,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.4850027757515306
       },
-      "target": {
-        "count": 11,
-        "wins": 1,
-        "sales": 721737636,
-        "cost": 263025000,
-        "profit": -286005444,
-        "avgProfit": -26000495,
-        "winRate": 0.09090909090909091,
-        "margin": -0.396273423657236
-      },
       "other": {
         "count": 10,
         "wins": 3,
@@ -166,22 +123,10 @@ const DATA={
         "avgProfit": -4069046,
         "winRate": 0.3,
         "margin": -0.0456106577470555
-      },
-      "type": "SK·K 편성 제한",
-      "reason": "SK·K 반복 적자, 타 채널 근거 부족"
+      }
     },
     {
       "pgm": "몸신의탄생",
-      "total": {
-        "count": 6,
-        "wins": 0,
-        "sales": 487857272,
-        "cost": 206550000,
-        "profit": -210046042,
-        "avgProfit": -35007674,
-        "winRate": 0,
-        "margin": -0.4305481419573879
-      },
       "sk": {
         "count": 5,
         "wins": 0,
@@ -202,16 +147,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 5,
-        "wins": 0,
-        "sales": 429926363,
-        "cost": 184050000,
-        "profit": -200163616,
-        "avgProfit": -40032723,
-        "winRate": 0,
-        "margin": -0.4655765108314607
-      },
       "other": {
         "count": 1,
         "wins": 0,
@@ -221,22 +156,10 @@ const DATA={
         "avgProfit": -9882426,
         "winRate": 0,
         "margin": -0.17058986593840605
-      },
-      "type": "SK·K 편성 제한",
-      "reason": "SK·K 반복 적자, 타 채널 근거 부족"
+      }
     },
     {
       "pgm": "조선다큐",
-      "total": {
-        "count": 18,
-        "wins": 7,
-        "sales": 2211488364,
-        "cost": 509150000,
-        "profit": -99661199,
-        "avgProfit": -5536733,
-        "winRate": 0.3888888888888889,
-        "margin": -0.0450652151837413
-      },
       "sk": {
         "count": 4,
         "wins": 0,
@@ -257,16 +180,6 @@ const DATA={
         "winRate": 0.25,
         "margin": -0.06397022974333899
       },
-      "target": {
-        "count": 8,
-        "wins": 1,
-        "sales": 981556545,
-        "cost": 277900000,
-        "profit": -113515183,
-        "avgProfit": -14189398,
-        "winRate": 0.125,
-        "margin": -0.11564813415818036
-      },
       "other": {
         "count": 10,
         "wins": 6,
@@ -276,22 +189,10 @@ const DATA={
         "avgProfit": 1385398,
         "winRate": 0.6,
         "margin": 0.01126402601020927
-      },
-      "type": "SK·K 조합 이슈",
-      "reason": "타 홈쇼핑사 흑자, SK·K 반복 적자"
+      }
     },
     {
       "pgm": "질병의법칙",
-      "total": {
-        "count": 6,
-        "wins": 2,
-        "sales": 461960909,
-        "cost": 161000000,
-        "profit": -94732762,
-        "avgProfit": -15788794,
-        "winRate": 0.3333333333333333,
-        "margin": -0.20506661960871672
-      },
       "sk": {
         "count": 3,
         "wins": 1,
@@ -312,16 +213,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.2563082412978145
       },
-      "target": {
-        "count": 4,
-        "wins": 1,
-        "sales": 263690909,
-        "cost": 110400000,
-        "profit": -78526821,
-        "avgProfit": -19631705,
-        "winRate": 0.25,
-        "margin": -0.297798742087085
-      },
       "other": {
         "count": 2,
         "wins": 1,
@@ -331,22 +222,10 @@ const DATA={
         "avgProfit": -8102970,
         "winRate": 0.5,
         "margin": -0.08173672769455792
-      },
-      "type": "SK·K 편성 제한",
-      "reason": "SK·K 반복 적자, 타 채널 근거 부족"
+      }
     },
     {
       "pgm": "어벤져스",
-      "total": {
-        "count": 18,
-        "wins": 5,
-        "sales": 1894226908,
-        "cost": 400100000,
-        "profit": -167604527,
-        "avgProfit": -9311363,
-        "winRate": 0.2777777777777778,
-        "margin": -0.08848175806823667
-      },
       "sk": {
         "count": 4,
         "wins": 1,
@@ -367,16 +246,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.19479156152489485
       },
-      "target": {
-        "count": 5,
-        "wins": 1,
-        "sales": 441162727,
-        "cost": 101300000,
-        "profit": -75262746,
-        "avgProfit": -15052549,
-        "winRate": 0.2,
-        "margin": -0.17060087218111697
-      },
       "other": {
         "count": 13,
         "wins": 4,
@@ -386,22 +255,10 @@ const DATA={
         "avgProfit": -7103214,
         "winRate": 0.3076923076923077,
         "margin": -0.06354969189072592
-      },
-      "type": "PGM 공통 이슈",
-      "reason": "SK·K와 타 홈쇼핑사 모두 적자"
+      }
     },
     {
       "pgm": "중독자들",
-      "total": {
-        "count": 9,
-        "wins": 3,
-        "sales": 670492363,
-        "cost": 151500000,
-        "profit": -96003685,
-        "avgProfit": -10667076,
-        "winRate": 0.3333333333333333,
-        "margin": -0.14318386054458312
-      },
       "sk": {
         "count": 2,
         "wins": 1,
@@ -422,16 +279,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.19507919535138019
       },
-      "target": {
-        "count": 3,
-        "wins": 1,
-        "sales": 131644545,
-        "cost": 63900000,
-        "profit": -70288085,
-        "avgProfit": -23429362,
-        "winRate": 0.3333333333333333,
-        "margin": -0.5339232628287028
-      },
       "other": {
         "count": 6,
         "wins": 2,
@@ -441,22 +288,10 @@ const DATA={
         "avgProfit": -4285933,
         "winRate": 0.3333333333333333,
         "margin": -0.047723307288218435
-      },
-      "type": "SK·K 편성 제한",
-      "reason": "SK·K 반복 적자, 타 채널 근거 부족"
+      }
     },
     {
       "pgm": "썰록",
-      "total": {
-        "count": 12,
-        "wins": 7,
-        "sales": 1653620909,
-        "cost": 345125000,
-        "profit": -99300473,
-        "avgProfit": -8275039,
-        "winRate": 0.5833333333333334,
-        "margin": -0.06005032499259478
-      },
       "sk": {
         "count": 1,
         "wins": 0,
@@ -476,16 +311,6 @@ const DATA={
         "avgProfit": 0,
         "winRate": 0,
         "margin": 0
-      },
-      "target": {
-        "count": 1,
-        "wins": 0,
-        "sales": 50737273,
-        "cost": 37950000,
-        "profit": -60323055,
-        "avgProfit": -60323055,
-        "winRate": 0,
-        "margin": -1.1889297834355426
       },
       "other": {
         "count": 11,
@@ -496,22 +321,10 @@ const DATA={
         "avgProfit": -3543402,
         "winRate": 0.6363636363636364,
         "margin": -0.024317060280974755
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "명의보감",
-      "total": {
-        "count": 15,
-        "wins": 5,
-        "sales": 1959101090,
-        "cost": 423825000,
-        "profit": -89757815,
-        "avgProfit": -5983854,
-        "winRate": 0.3333333333333333,
-        "margin": -0.04581581596690348
-      },
       "sk": {
         "count": 4,
         "wins": 1,
@@ -532,16 +345,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 4,
-        "wins": 1,
-        "sales": 428157455,
-        "cost": 114350000,
-        "profit": -50785644,
-        "avgProfit": -12696411,
-        "winRate": 0.25,
-        "margin": -0.11861441020570342
-      },
       "other": {
         "count": 11,
         "wins": 4,
@@ -551,22 +354,10 @@ const DATA={
         "avgProfit": -3542925,
         "winRate": 0.36363636363636365,
         "margin": -0.02545630688748381
-      },
-      "type": "SK·K 편성 제한",
-      "reason": "SK·K 반복 적자, 타 채널 근거 부족"
+      }
     },
     {
       "pgm": "지킬박사",
-      "total": {
-        "count": 52,
-        "wins": 26,
-        "sales": 4454992908,
-        "cost": 851075000,
-        "profit": 6915953,
-        "avgProfit": 132999,
-        "winRate": 0.5,
-        "margin": 0.0015524049404390208
-      },
       "sk": {
         "count": 13,
         "wins": 7,
@@ -587,16 +378,6 @@ const DATA={
         "winRate": 0.3333333333333333,
         "margin": 0.007979436099148854
       },
-      "target": {
-        "count": 19,
-        "wins": 9,
-        "sales": 1430308000,
-        "cost": 312250000,
-        "profit": -44106269,
-        "avgProfit": -2321383,
-        "winRate": 0.47368421052631576,
-        "margin": -0.0308369029607609
-      },
       "other": {
         "count": 33,
         "wins": 17,
@@ -606,22 +387,10 @@ const DATA={
         "avgProfit": 1546128,
         "winRate": 0.5151515151515151,
         "margin": 0.016868607326684226
-      },
-      "type": "조건부 승인",
-      "reason": "SK·K 평균 손실이나 제한 기준 미달"
+      }
     },
     {
       "pgm": "건강히어로",
-      "total": {
-        "count": 2,
-        "wins": 1,
-        "sales": 100384546,
-        "cost": 34500000,
-        "profit": -37044565,
-        "avgProfit": -18522282,
-        "winRate": 0.5,
-        "margin": -0.3690265730743057
-      },
       "sk": {
         "count": 1,
         "wins": 0,
@@ -642,16 +411,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 1,
-        "wins": 0,
-        "sales": 64339091,
-        "cost": 27000000,
-        "profit": -43947674,
-        "avgProfit": -43947674,
-        "winRate": 0,
-        "margin": -0.6830633339224516
-      },
       "other": {
         "count": 1,
         "wins": 1,
@@ -661,22 +420,10 @@ const DATA={
         "avgProfit": 6903109,
         "winRate": 1,
         "margin": 0.19151121826593673
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "나비효과",
-      "total": {
-        "count": 8,
-        "wins": 2,
-        "sales": 801173274,
-        "cost": 270201250,
-        "profit": -108674298,
-        "avgProfit": -13584287,
-        "winRate": 0.25,
-        "margin": -0.13564393811768613
-      },
       "sk": {
         "count": 1,
         "wins": 0,
@@ -697,16 +444,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.47912382343395
       },
-      "target": {
-        "count": 2,
-        "wins": 0,
-        "sales": 124657273,
-        "cost": 55968750,
-        "profit": -42155233,
-        "avgProfit": -21077616,
-        "winRate": 0,
-        "margin": -0.3381690613430955
-      },
       "other": {
         "count": 6,
         "wins": 2,
@@ -716,22 +453,10 @@ const DATA={
         "avgProfit": -11086511,
         "winRate": 0.3333333333333333,
         "margin": -0.0983259300617784
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "다큐플러스",
-      "total": {
-        "count": 19,
-        "wins": 7,
-        "sales": 1396604181,
-        "cost": 371700000,
-        "profit": -96601653,
-        "avgProfit": -5084298,
-        "winRate": 0.3684210526315789,
-        "margin": -0.06916895589617314
-      },
       "sk": {
         "count": 6,
         "wins": 4,
@@ -752,16 +477,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.21431484642934115
       },
-      "target": {
-        "count": 9,
-        "wins": 4,
-        "sales": 631893091,
-        "cost": 171300000,
-        "profit": -40389357,
-        "avgProfit": -4487706,
-        "winRate": 0.4444444444444444,
-        "margin": -0.0639180228036391
-      },
       "other": {
         "count": 10,
         "wins": 3,
@@ -771,22 +486,10 @@ const DATA={
         "avgProfit": -5621230,
         "winRate": 0.3,
         "margin": -0.07350788648821609
-      },
-      "type": "조건부 승인",
-      "reason": "SK·K 평균 손실이나 제한 기준 미달"
+      }
     },
     {
       "pgm": "가화만사성",
-      "total": {
-        "count": 7,
-        "wins": 5,
-        "sales": 289127273,
-        "cost": 60000000,
-        "profit": -22254371,
-        "avgProfit": -3179196,
-        "winRate": 0.7142857142857143,
-        "margin": -0.07697084667623175
-      },
       "sk": {
         "count": 4,
         "wins": 2,
@@ -806,16 +509,6 @@ const DATA={
         "avgProfit": 0,
         "winRate": 0,
         "margin": 0
-      },
-      "target": {
-        "count": 4,
-        "wins": 2,
-        "sales": 159396363,
-        "cost": 35000000,
-        "profit": -32832316,
-        "avgProfit": -8208079,
-        "winRate": 0.5,
-        "margin": -0.20597907870708443
       },
       "other": {
         "count": 3,
@@ -826,22 +519,10 @@ const DATA={
         "avgProfit": 3525982,
         "winRate": 1,
         "margin": 0.08153758421952023
-      },
-      "type": "조건부 승인",
-      "reason": "SK·K 평균 손실이나 제한 기준 미달"
+      }
     },
     {
       "pgm": "굿모닝대한민국",
-      "total": {
-        "count": 2,
-        "wins": 0,
-        "sales": 105143454,
-        "cost": 50600000,
-        "profit": -63814947,
-        "avgProfit": -31907473,
-        "winRate": 0,
-        "margin": -0.6069321918985084
-      },
       "sk": {
         "count": 1,
         "wins": 0,
@@ -862,16 +543,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 1,
-        "wins": 0,
-        "sales": 54622909,
-        "cost": 25300000,
-        "profit": -32176681,
-        "avgProfit": -32176681,
-        "winRate": 0,
-        "margin": -0.589069340851107
-      },
       "other": {
         "count": 1,
         "wins": 0,
@@ -881,22 +552,10 @@ const DATA={
         "avgProfit": -31638266,
         "winRate": 0,
         "margin": -0.6262455403044445
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "알아야산다",
-      "total": {
-        "count": 2,
-        "wins": 1,
-        "sales": 219194182,
-        "cost": 63000000,
-        "profit": -24600205,
-        "avgProfit": -12300102,
-        "winRate": 0.5,
-        "margin": -0.11223019140170426
-      },
       "sk": {
         "count": 1,
         "wins": 0,
@@ -917,16 +576,6 @@ const DATA={
         "winRate": 1,
         "margin": 0.06832298122500417
       },
-      "target": {
-        "count": 2,
-        "wins": 1,
-        "sales": 219194182,
-        "cost": 63000000,
-        "profit": -24600205,
-        "avgProfit": -12300102,
-        "winRate": 0.5,
-        "margin": -0.11223019140170426
-      },
       "other": {
         "count": 0,
         "wins": 0,
@@ -936,22 +585,10 @@ const DATA={
         "avgProfit": 0,
         "winRate": 0,
         "margin": 0
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "다큐H",
-      "total": {
-        "count": 16,
-        "wins": 10,
-        "sales": 712121455,
-        "cost": 155000000,
-        "profit": 5882956,
-        "avgProfit": 367685,
-        "winRate": 0.625,
-        "margin": 0.008261169437733062
-      },
       "sk": {
         "count": 5,
         "wins": 3,
@@ -972,16 +609,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.13290763846618373
       },
-      "target": {
-        "count": 8,
-        "wins": 3,
-        "sales": 377737092,
-        "cost": 90000000,
-        "profit": -22585616,
-        "avgProfit": -2823202,
-        "winRate": 0.375,
-        "margin": -0.05979189356389708
-      },
       "other": {
         "count": 8,
         "wins": 7,
@@ -991,22 +618,10 @@ const DATA={
         "avgProfit": 3558572,
         "winRate": 0.875,
         "margin": 0.08513727060855414
-      },
-      "type": "조건부 승인",
-      "reason": "SK·K 평균 손실이나 제한 기준 미달"
+      }
     },
     {
       "pgm": "보물원정대",
-      "total": {
-        "count": 14,
-        "wins": 4,
-        "sales": 953342726,
-        "cost": 292500000,
-        "profit": -139019272,
-        "avgProfit": -9929948,
-        "winRate": 0.2857142857142857,
-        "margin": -0.14582297447560322
-      },
       "sk": {
         "count": 3,
         "wins": 1,
@@ -1026,16 +641,6 @@ const DATA={
         "avgProfit": 0,
         "winRate": 0,
         "margin": 0
-      },
-      "target": {
-        "count": 3,
-        "wins": 1,
-        "sales": 83200909,
-        "cost": 27000000,
-        "profit": -18580550,
-        "avgProfit": -6193517,
-        "winRate": 0.3333333333333333,
-        "margin": -0.22332147837471342
       },
       "other": {
         "count": 11,
@@ -1046,22 +651,10 @@ const DATA={
         "avgProfit": -10948975,
         "winRate": 0.2727272727272727,
         "margin": -0.1384127502517213
-      },
-      "type": "조건부 승인",
-      "reason": "SK·K 평균 손실이나 제한 기준 미달"
+      }
     },
     {
       "pgm": "나이야가라",
-      "total": {
-        "count": 2,
-        "wins": 0,
-        "sales": 136722182,
-        "cost": 46000000,
-        "profit": -36300431,
-        "avgProfit": -18150215,
-        "winRate": 0,
-        "margin": -0.2655050590108341
-      },
       "sk": {
         "count": 1,
         "wins": 0,
@@ -1081,16 +674,6 @@ const DATA={
         "avgProfit": 0,
         "winRate": 0,
         "margin": 0
-      },
-      "target": {
-        "count": 1,
-        "wins": 0,
-        "sales": 35829818,
-        "cost": 9200000,
-        "profit": -889652,
-        "avgProfit": -889652,
-        "winRate": 0,
-        "margin": -0.024829933548643757
       },
       "other": {
         "count": 1,
@@ -1101,22 +684,10 @@ const DATA={
         "avgProfit": -35410779,
         "winRate": 0,
         "margin": -0.35097580823856994
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "알약방",
-      "total": {
-        "count": 1,
-        "wins": 1,
-        "sales": 29155636,
-        "cost": 5000000,
-        "profit": 3025718,
-        "avgProfit": 3025718,
-        "winRate": 1,
-        "margin": 0.1037781511608939
-      },
       "sk": {
         "count": 0,
         "wins": 0,
@@ -1137,16 +708,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 0,
-        "wins": 0,
-        "sales": 0,
-        "cost": 0,
-        "profit": 0,
-        "avgProfit": 0,
-        "winRate": 0,
-        "margin": 0
-      },
       "other": {
         "count": 1,
         "wins": 1,
@@ -1156,22 +717,10 @@ const DATA={
         "avgProfit": 3025718,
         "winRate": 1,
         "margin": 0.1037781511608939
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "유레카",
-      "total": {
-        "count": 2,
-        "wins": 0,
-        "sales": 216780728,
-        "cost": 61600000,
-        "profit": -13267750,
-        "avgProfit": -6633875,
-        "winRate": 0,
-        "margin": -0.06120354942252985
-      },
       "sk": {
         "count": 0,
         "wins": 0,
@@ -1192,16 +741,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 0,
-        "wins": 0,
-        "sales": 0,
-        "cost": 0,
-        "profit": 0,
-        "avgProfit": 0,
-        "winRate": 0,
-        "margin": 0
-      },
       "other": {
         "count": 2,
         "wins": 0,
@@ -1211,22 +750,10 @@ const DATA={
         "avgProfit": -6633875,
         "winRate": 0,
         "margin": -0.06120354942252985
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "엄지의제왕",
-      "total": {
-        "count": 2,
-        "wins": 2,
-        "sales": 83038181,
-        "cost": 15000000,
-        "profit": 6855322,
-        "avgProfit": 3427661,
-        "winRate": 1,
-        "margin": 0.08255626408772128
-      },
       "sk": {
         "count": 2,
         "wins": 2,
@@ -1247,16 +774,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 2,
-        "wins": 2,
-        "sales": 83038181,
-        "cost": 15000000,
-        "profit": 6855322,
-        "avgProfit": 3427661,
-        "winRate": 1,
-        "margin": 0.08255626408772128
-      },
       "other": {
         "count": 0,
         "wins": 0,
@@ -1266,22 +783,10 @@ const DATA={
         "avgProfit": 0,
         "winRate": 0,
         "margin": 0
-      },
-      "type": "표본부족",
-      "reason": "SK·K 실적 3건 미만"
+      }
     },
     {
       "pgm": "역전의한방",
-      "total": {
-        "count": 9,
-        "wins": 6,
-        "sales": 843843819,
-        "cost": 153000000,
-        "profit": 46085848,
-        "avgProfit": 5120650,
-        "winRate": 0.6666666666666666,
-        "margin": 0.05461419158655945
-      },
       "sk": {
         "count": 1,
         "wins": 1,
@@ -1302,16 +807,6 @@ const DATA={
         "winRate": 0,
         "margin": -0.1064428823903535
       },
-      "target": {
-        "count": 3,
-        "wins": 1,
-        "sales": 256229091,
-        "cost": 36000000,
-        "profit": 17979522,
-        "avgProfit": 5993174,
-        "winRate": 0.3333333333333333,
-        "margin": 0.07016971386750148
-      },
       "other": {
         "count": 6,
         "wins": 5,
@@ -1321,22 +816,10 @@ const DATA={
         "avgProfit": 4684388,
         "winRate": 0.8333333333333334,
         "margin": 0.04783121433266731
-      },
-      "type": "유지 검토",
-      "reason": "SK·K 누적 또는 평균 흑자"
+      }
     },
     {
       "pgm": "잘살면좋잖아",
-      "total": {
-        "count": 13,
-        "wins": 8,
-        "sales": 1242706362,
-        "cost": 202225000,
-        "profit": 65525521,
-        "avgProfit": 5040425,
-        "winRate": 0.6153846153846154,
-        "margin": 0.05272808042484295
-      },
       "sk": {
         "count": 5,
         "wins": 3,
@@ -1357,16 +840,6 @@ const DATA={
         "winRate": 0,
         "margin": 0
       },
-      "target": {
-        "count": 5,
-        "wins": 3,
-        "sales": 376521818,
-        "cost": 44100000,
-        "profit": 33302872,
-        "avgProfit": 6660574,
-        "winRate": 0.6,
-        "margin": 0.08844871773141179
-      },
       "other": {
         "count": 8,
         "wins": 5,
@@ -1376,22 +849,10 @@ const DATA={
         "avgProfit": 4027831,
         "winRate": 0.625,
         "margin": 0.03720067417873483
-      },
-      "type": "유지 검토",
-      "reason": "SK·K 누적 또는 평균 흑자"
+      }
     },
     {
       "pgm": "인생의연장전",
-      "total": {
-        "count": 57,
-        "wins": 33,
-        "sales": 9032105997,
-        "cost": 1508350000,
-        "profit": 435353331,
-        "avgProfit": 7637778,
-        "winRate": 0.5789473684210527,
-        "margin": 0.04820064458329009
-      },
       "sk": {
         "count": 9,
         "wins": 5,
@@ -1412,16 +873,6 @@ const DATA={
         "winRate": 0.4,
         "margin": 0.12229754862025922
       },
-      "target": {
-        "count": 14,
-        "wins": 7,
-        "sales": 1566978179,
-        "cost": 256350000,
-        "profit": 139530161,
-        "avgProfit": 9966440,
-        "winRate": 0.5,
-        "margin": 0.08904409957325896
-      },
       "other": {
         "count": 43,
         "wins": 26,
@@ -1431,9 +882,7 @@ const DATA={
         "avgProfit": 6879609,
         "winRate": 0.6046511627906976,
         "margin": 0.039627341582378246
-      },
-      "type": "유지 검토",
-      "reason": "SK·K 누적 또는 평균 흑자"
+      }
     }
   ],
   "combos": [
@@ -1844,853 +1293,6 @@ const DATA={
       "avgProfit": 8173145,
       "winRate": 0.5555555555555556,
       "margin": 0.07158674121769051
-    }
-  ],
-  "items": [
-    {
-      "home": "K",
-      "pgm": "건식당",
-      "item": "알파",
-      "count": 3,
-      "wins": 0,
-      "sales": 166327636,
-      "cost": 56700000,
-      "profit": -70862660,
-      "avgProfit": -23620887,
-      "winRate": 0,
-      "margin": -0.42604260905866537
-    },
-    {
-      "home": "SK",
-      "pgm": "건식당",
-      "item": "알파",
-      "count": 2,
-      "wins": 0,
-      "sales": 254923637,
-      "cost": 88200000,
-      "profit": -67800275,
-      "avgProfit": -33900137,
-      "winRate": 0,
-      "margin": -0.26596307740580366
-    },
-    {
-      "home": "SK",
-      "pgm": "중독자들",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 56999091,
-      "cost": 41400000,
-      "profit": -65864450,
-      "avgProfit": -65864450,
-      "winRate": 0,
-      "margin": -1.1555350944105407
-    },
-    {
-      "home": "SK",
-      "pgm": "몸신의탄생",
-      "item": "아세로라",
-      "count": 1,
-      "wins": 0,
-      "sales": 73330000,
-      "cost": 49500000,
-      "profit": -64293520,
-      "avgProfit": -64293520,
-      "winRate": 0,
-      "margin": -0.8767696713486977
-    },
-    {
-      "home": "K",
-      "pgm": "건식당",
-      "item": "파라",
-      "count": 3,
-      "wins": 0,
-      "sales": 120617272,
-      "cost": 47250000,
-      "profit": -64111384,
-      "avgProfit": -21370461,
-      "winRate": 0,
-      "margin": -0.5315273918647405
-    },
-    {
-      "home": "SK",
-      "pgm": "몸신의탄생",
-      "item": "알파",
-      "count": 2,
-      "wins": 0,
-      "sales": 204616363,
-      "cost": 73600000,
-      "profit": -60807775,
-      "avgProfit": -30403887,
-      "winRate": 0,
-      "margin": -0.2971794342762314
-    },
-    {
-      "home": "SK",
-      "pgm": "썰록",
-      "item": "아세로라",
-      "count": 1,
-      "wins": 0,
-      "sales": 50737273,
-      "cost": 37950000,
-      "profit": -60323055,
-      "avgProfit": -60323055,
-      "winRate": 0,
-      "margin": -1.1889297834355426
-    },
-    {
-      "home": "SK",
-      "pgm": "질병의법칙",
-      "item": "파라",
-      "count": 3,
-      "wins": 1,
-      "sales": 159222727,
-      "cost": 55200000,
-      "profit": -51750765,
-      "avgProfit": -17250255,
-      "winRate": 0.3333333333333333,
-      "margin": -0.32502122011765316
-    },
-    {
-      "home": "SK",
-      "pgm": "조선다큐",
-      "item": "맥주효모",
-      "count": 2,
-      "wins": 0,
-      "sales": 214475636,
-      "cost": 64400000,
-      "profit": -50198487,
-      "avgProfit": -25099243,
-      "winRate": 0,
-      "margin": -0.23405216525386593
-    },
-    {
-      "home": "SK",
-      "pgm": "몸신의탄생",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 85830000,
-      "cost": 37950000,
-      "profit": -45201540,
-      "avgProfit": -45201540,
-      "winRate": 0,
-      "margin": -0.5266403355470115
-    },
-    {
-      "home": "SK",
-      "pgm": "건강히어로",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 64339091,
-      "cost": 27000000,
-      "profit": -43947674,
-      "avgProfit": -43947674,
-      "winRate": 0,
-      "margin": -0.6830633339224516
-    },
-    {
-      "home": "K",
-      "pgm": "건식당",
-      "item": "올포",
-      "count": 1,
-      "wins": 0,
-      "sales": 79208182,
-      "cost": 34200000,
-      "profit": -42611221,
-      "avgProfit": -42611221,
-      "winRate": 0,
-      "margin": -0.5379648910512805
-    },
-    {
-      "home": "SK",
-      "pgm": "건식당",
-      "item": "파라",
-      "count": 2,
-      "wins": 1,
-      "sales": 100660909,
-      "cost": 36675000,
-      "profit": -40619904,
-      "avgProfit": -20309952,
-      "winRate": 0.5,
-      "margin": -0.40353206029562083
-    },
-    {
-      "home": "SK",
-      "pgm": "명의보감",
-      "item": "파라",
-      "count": 3,
-      "wins": 1,
-      "sales": 298889091,
-      "cost": 79350000,
-      "profit": -39596138,
-      "avgProfit": -13198713,
-      "winRate": 0.3333333333333333,
-      "margin": -0.13247769554761032
-    },
-    {
-      "home": "SK",
-      "pgm": "굿모닝대한민국",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 54622909,
-      "cost": 25300000,
-      "profit": -32176681,
-      "avgProfit": -32176681,
-      "winRate": 0,
-      "margin": -0.589069340851107
-    },
-    {
-      "home": "SK",
-      "pgm": "알아야산다",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 131376000,
-      "cost": 45000000,
-      "profit": -30600205,
-      "avgProfit": -30600205,
-      "winRate": 0,
-      "margin": -0.2329208150651565
-    },
-    {
-      "home": "SK",
-      "pgm": "몸신의탄생",
-      "item": "올포",
-      "count": 1,
-      "wins": 0,
-      "sales": 66150000,
-      "cost": 23000000,
-      "profit": -29860781,
-      "avgProfit": -29860781,
-      "winRate": 0,
-      "margin": -0.45141014361300075
-    },
-    {
-      "home": "K",
-      "pgm": "나비효과",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 61620000,
-      "cost": 37968750,
-      "profit": -29523610,
-      "avgProfit": -29523610,
-      "winRate": 0,
-      "margin": -0.47912382343395
-    },
-    {
-      "home": "K",
-      "pgm": "조선다큐",
-      "item": "맥주효모",
-      "count": 1,
-      "wins": 0,
-      "sales": 118649455,
-      "cost": 46000000,
-      "profit": -27759731,
-      "avgProfit": -27759731,
-      "winRate": 0,
-      "margin": -0.23396425209032776
-    },
-    {
-      "home": "K",
-      "pgm": "질병의법칙",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 104468182,
-      "cost": 55200000,
-      "profit": -26776056,
-      "avgProfit": -26776056,
-      "winRate": 0,
-      "margin": -0.2563082412978145
-    },
-    {
-      "home": "SK",
-      "pgm": "조선다큐",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 143871818,
-      "cost": 45000000,
-      "profit": -26464380,
-      "avgProfit": -26464380,
-      "winRate": 0,
-      "margin": -0.18394415506725578
-    },
-    {
-      "home": "SK",
-      "pgm": "지킬박사",
-      "item": "맥주효모",
-      "count": 2,
-      "wins": 0,
-      "sales": 122234181,
-      "cost": 41700000,
-      "profit": -25953083,
-      "avgProfit": -12976541,
-      "winRate": 0,
-      "margin": -0.21232263175224286
-    },
-    {
-      "home": "K",
-      "pgm": "조선다큐",
-      "item": "알파",
-      "count": 2,
-      "wins": 0,
-      "sales": 213925091,
-      "cost": 63000000,
-      "profit": -23435895,
-      "avgProfit": -11717947,
-      "winRate": 0,
-      "margin": -0.10955187580123549
-    },
-    {
-      "home": "SK",
-      "pgm": "어벤져스",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 64232727,
-      "cost": 18400000,
-      "profit": -23276030,
-      "avgProfit": -23276030,
-      "winRate": 0,
-      "margin": -0.3623702602568937
-    },
-    {
-      "home": "SK",
-      "pgm": "어벤져스",
-      "item": "아세로라",
-      "count": 2,
-      "wins": 1,
-      "sales": 163016364,
-      "cost": 37000000,
-      "profit": -22608118,
-      "avgProfit": -11304059,
-      "winRate": 0.5,
-      "margin": -0.13868618735723978
-    },
-    {
-      "home": "K",
-      "pgm": "다큐플러스",
-      "item": "아세로라",
-      "count": 1,
-      "wins": 0,
-      "sales": 106881818,
-      "cost": 40500000,
-      "profit": -21867084,
-      "avgProfit": -21867084,
-      "winRate": 0,
-      "margin": -0.20459124301197795
-    },
-    {
-      "home": "SK",
-      "pgm": "가화만사성",
-      "item": "올포",
-      "count": 3,
-      "wins": 2,
-      "sales": 131956363,
-      "cost": 30000000,
-      "profit": -20555516,
-      "avgProfit": -6851839,
-      "winRate": 0.6666666666666666,
-      "margin": -0.15577510271331138
-    },
-    {
-      "home": "K",
-      "pgm": "지킬박사",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 40642727,
-      "cost": 10000000,
-      "profit": -17713929,
-      "avgProfit": -17713929,
-      "winRate": 0,
-      "margin": -0.4358449914052273
-    },
-    {
-      "home": "SK",
-      "pgm": "지킬박사",
-      "item": "파라",
-      "count": 10,
-      "wins": 7,
-      "sales": 793195456,
-      "cost": 162700000,
-      "profit": -17278802,
-      "avgProfit": -1727880,
-      "winRate": 0.7,
-      "margin": -0.021783788433603936
-    },
-    {
-      "home": "K",
-      "pgm": "다큐플러스",
-      "item": "알파",
-      "count": 2,
-      "wins": 0,
-      "sales": 74118545,
-      "cost": 25800000,
-      "profit": -16923981,
-      "avgProfit": -8461990,
-      "winRate": 0,
-      "margin": -0.22833665987371987
-    },
-    {
-      "home": "SK",
-      "pgm": "어벤져스",
-      "item": "올포",
-      "count": 1,
-      "wins": 0,
-      "sales": 140203636,
-      "cost": 27900000,
-      "profit": -15020512,
-      "avgProfit": -15020512,
-      "winRate": 0,
-      "margin": -0.10713354110160167
-    },
-    {
-      "home": "K",
-      "pgm": "다큐H",
-      "item": "맥주효모",
-      "count": 1,
-      "wins": 0,
-      "sales": 86059636,
-      "cost": 25000000,
-      "profit": -14860757,
-      "avgProfit": -14860757,
-      "winRate": 0,
-      "margin": -0.172679756628299
-    },
-    {
-      "home": "K",
-      "pgm": "어벤져스",
-      "item": "올포",
-      "count": 1,
-      "wins": 0,
-      "sales": 73710000,
-      "cost": 18000000,
-      "profit": -14358086,
-      "avgProfit": -14358086,
-      "winRate": 0,
-      "margin": -0.19479156152489485
-    },
-    {
-      "home": "SK",
-      "pgm": "나비효과",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 63037273,
-      "cost": 18000000,
-      "profit": -12631623,
-      "avgProfit": -12631623,
-      "winRate": 0,
-      "margin": -0.2003833985648459
-    },
-    {
-      "home": "K",
-      "pgm": "지킬박사",
-      "item": "맥주효모",
-      "count": 2,
-      "wins": 0,
-      "sales": 92066181,
-      "cost": 18900000,
-      "profit": -12305314,
-      "avgProfit": -6152657,
-      "winRate": 0,
-      "margin": -0.13365726552728413
-    },
-    {
-      "home": "SK",
-      "pgm": "가화만사성",
-      "item": "루피니빈",
-      "count": 1,
-      "wins": 0,
-      "sales": 27440000,
-      "cost": 5000000,
-      "profit": -12276800,
-      "avgProfit": -12276800,
-      "winRate": 0,
-      "margin": -0.44740524781341107
-    },
-    {
-      "home": "SK",
-      "pgm": "명의보감",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 129268364,
-      "cost": 35000000,
-      "profit": -11189506,
-      "avgProfit": -11189506,
-      "winRate": 0,
-      "margin": -0.08656028167881819
-    },
-    {
-      "home": "SK",
-      "pgm": "보물원정대",
-      "item": "아세로라",
-      "count": 1,
-      "wins": 0,
-      "sales": 25900000,
-      "cost": 18000000,
-      "profit": -10491840,
-      "avgProfit": -10491840,
-      "winRate": 0,
-      "margin": -0.4050903474903475
-    },
-    {
-      "home": "K",
-      "pgm": "역전의한방",
-      "item": "파라",
-      "count": 1,
-      "wins": 0,
-      "sales": 74259091,
-      "cost": 13500000,
-      "profit": -10389230,
-      "avgProfit": -10389230,
-      "winRate": 0,
-      "margin": -0.13990515989483363
-    },
-    {
-      "home": "SK",
-      "pgm": "보물원정대",
-      "item": "파라",
-      "count": 2,
-      "wins": 1,
-      "sales": 57300909,
-      "cost": 9000000,
-      "profit": -8088710,
-      "avgProfit": -4044355,
-      "winRate": 0.5,
-      "margin": -0.14116198400971267
-    },
-    {
-      "home": "SK",
-      "pgm": "다큐H",
-      "item": "맥주효모",
-      "count": 2,
-      "wins": 1,
-      "sales": 96545455,
-      "cost": 30000000,
-      "profit": -7270875,
-      "avgProfit": -3635437,
-      "winRate": 0.5,
-      "margin": -0.07531038100136356
-    },
-    {
-      "home": "SK",
-      "pgm": "다큐플러스",
-      "item": "알파",
-      "count": 2,
-      "wins": 1,
-      "sales": 129970909,
-      "cost": 40000000,
-      "profit": -7047418,
-      "avgProfit": -3523709,
-      "winRate": 0.5,
-      "margin": -0.054223041557707345
-    },
-    {
-      "home": "K",
-      "pgm": "인생의연장전",
-      "item": "아세로라",
-      "count": 1,
-      "wins": 0,
-      "sales": 14452727,
-      "cost": 13500000,
-      "profit": -6310186,
-      "avgProfit": -6310186,
-      "winRate": 0,
-      "margin": -0.43660867599588643
-    },
-    {
-      "home": "SK",
-      "pgm": "인생의연장전",
-      "item": "알파",
-      "count": 3,
-      "wins": 2,
-      "sales": 307363635,
-      "cost": 54000000,
-      "profit": -5165157,
-      "avgProfit": -1721719,
-      "winRate": 0.6666666666666666,
-      "margin": -0.01680471081102356
-    },
-    {
-      "home": "K",
-      "pgm": "중독자들",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 25291636,
-      "cost": 10800000,
-      "profit": -4933872,
-      "avgProfit": -4933872,
-      "winRate": 0,
-      "margin": -0.19507919535138019
-    },
-    {
-      "home": "SK",
-      "pgm": "지킬박사",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 33722182,
-      "cost": 5850000,
-      "profit": -4713739,
-      "avgProfit": -4713739,
-      "winRate": 0,
-      "margin": -0.13978155387453872
-    },
-    {
-      "home": "SK",
-      "pgm": "조선다큐",
-      "item": "올포",
-      "count": 1,
-      "wins": 0,
-      "sales": 119413636,
-      "cost": 25000000,
-      "profit": -4624405,
-      "avgProfit": -4624405,
-      "winRate": 0,
-      "margin": -0.03872593746328937
-    },
-    {
-      "home": "K",
-      "pgm": "다큐H",
-      "item": "올포",
-      "count": 1,
-      "wins": 0,
-      "sales": 39518182,
-      "cost": 5000000,
-      "profit": -3415990,
-      "avgProfit": -3415990,
-      "winRate": 0,
-      "margin": -0.08644097038674502
-    },
-    {
-      "home": "K",
-      "pgm": "인생의연장전",
-      "item": "올포",
-      "count": 1,
-      "wins": 0,
-      "sales": 47593636,
-      "cost": 13800000,
-      "profit": -2470852,
-      "avgProfit": -2470852,
-      "winRate": 0,
-      "margin": -0.051915596446550125
-    },
-    {
-      "home": "K",
-      "pgm": "다큐H",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 28277455,
-      "cost": 10000000,
-      "profit": -2171794,
-      "avgProfit": -2171794,
-      "winRate": 0,
-      "margin": -0.07680302205414172
-    },
-    {
-      "home": "K",
-      "pgm": "역전의한방",
-      "item": "아세로라",
-      "count": 1,
-      "wins": 0,
-      "sales": 37635455,
-      "cost": 9000000,
-      "profit": -1521148,
-      "avgProfit": -1521148,
-      "winRate": 0,
-      "margin": -0.04041795163629615
-    },
-    {
-      "home": "SK",
-      "pgm": "나이야가라",
-      "item": "알파",
-      "count": 1,
-      "wins": 0,
-      "sales": 35829818,
-      "cost": 9200000,
-      "profit": -889652,
-      "avgProfit": -889652,
-      "winRate": 0,
-      "margin": -0.024829933548643757
-    },
-    {
-      "home": "SK",
-      "pgm": "중독자들",
-      "item": "알파",
-      "count": 1,
-      "wins": 1,
-      "sales": 49353818,
-      "cost": 11700000,
-      "profit": 510237,
-      "avgProfit": 510237,
-      "winRate": 1,
-      "margin": 0.010338349101988421
-    },
-    {
-      "home": "SK",
-      "pgm": "다큐플러스",
-      "item": "파라",
-      "count": 1,
-      "wins": 1,
-      "sales": 41795455,
-      "cost": 13500000,
-      "profit": 1494720,
-      "avgProfit": 1494720,
-      "winRate": 1,
-      "margin": 0.035762740230965304
-    },
-    {
-      "home": "SK",
-      "pgm": "엄지의제왕",
-      "item": "맥주효모",
-      "count": 1,
-      "wins": 1,
-      "sales": 28766545,
-      "cost": 5000000,
-      "profit": 1831000,
-      "avgProfit": 1831000,
-      "winRate": 1,
-      "margin": 0.06365032714217157
-    },
-    {
-      "home": "SK",
-      "pgm": "다큐플러스",
-      "item": "아세로라",
-      "count": 3,
-      "wins": 2,
-      "sales": 279126364,
-      "cost": 51500000,
-      "profit": 3954406,
-      "avgProfit": 1318135,
-      "winRate": 0.6666666666666666,
-      "margin": 0.014167081687776365
-    },
-    {
-      "home": "SK",
-      "pgm": "엄지의제왕",
-      "item": "알파",
-      "count": 1,
-      "wins": 1,
-      "sales": 54271636,
-      "cost": 10000000,
-      "profit": 5024322,
-      "avgProfit": 5024322,
-      "winRate": 1,
-      "margin": 0.09257730870689065
-    },
-    {
-      "home": "SK",
-      "pgm": "다큐H",
-      "item": "알파",
-      "count": 3,
-      "wins": 2,
-      "sales": 127336364,
-      "cost": 20000000,
-      "profit": 5133800,
-      "avgProfit": 1711267,
-      "winRate": 0.6666666666666666,
-      "margin": 0.040316841464076984
-    },
-    {
-      "home": "K",
-      "pgm": "알아야산다",
-      "item": "알파",
-      "count": 1,
-      "wins": 1,
-      "sales": 87818182,
-      "cost": 18000000,
-      "profit": 6000000,
-      "avgProfit": 6000000,
-      "winRate": 1,
-      "margin": 0.06832298122500417
-    },
-    {
-      "home": "K",
-      "pgm": "조선다큐",
-      "item": "파라",
-      "count": 1,
-      "wins": 1,
-      "sales": 171220909,
-      "cost": 34500000,
-      "profit": 18967715,
-      "avgProfit": 18967715,
-      "winRate": 1,
-      "margin": 0.11077919811767849
-    },
-    {
-      "home": "SK",
-      "pgm": "역전의한방",
-      "item": "아세로라",
-      "count": 1,
-      "wins": 1,
-      "sales": 144334545,
-      "cost": 13500000,
-      "profit": 29889900,
-      "avgProfit": 29889900,
-      "winRate": 1,
-      "margin": 0.20708763795943652
-    },
-    {
-      "home": "SK",
-      "pgm": "잘살면좋잖아",
-      "item": "파라",
-      "count": 5,
-      "wins": 3,
-      "sales": 376521818,
-      "cost": 44100000,
-      "profit": 33302872,
-      "avgProfit": 6660574,
-      "winRate": 0.6,
-      "margin": 0.08844871773141179
-    },
-    {
-      "home": "K",
-      "pgm": "지킬박사",
-      "item": "올포",
-      "count": 3,
-      "wins": 2,
-      "sales": 348447273,
-      "cost": 73100000,
-      "profit": 33858598,
-      "avgProfit": 11286199,
-      "winRate": 0.6666666666666666,
-      "margin": 0.09716993250798091
-    },
-    {
-      "home": "K",
-      "pgm": "인생의연장전",
-      "item": "파라",
-      "count": 3,
-      "wins": 2,
-      "sales": 477390909,
-      "cost": 63400000,
-      "profit": 74752894,
-      "avgProfit": 24917631,
-      "winRate": 0.6666666666666666,
-      "margin": 0.1565863375081573
-    },
-    {
-      "home": "SK",
-      "pgm": "인생의연장전",
-      "item": "파라",
-      "count": 6,
-      "wins": 3,
-      "sales": 720177272,
-      "cost": 111650000,
-      "profit": 78723462,
-      "avgProfit": 13120577,
-      "winRate": 0.5,
-      "margin": 0.10931122802775703
     }
   ],
   "future": [
@@ -4663,18 +3265,15 @@ const DATA={
       }
     }
   ]
-};
-const O=DATA.overall,R=DATA.rows,C=DATA.combos,F=DATA.future;
+},O=DATA.overall,R=DATA.rows,C=DATA.combos,F=DATA.future;
 const num=v=>Math.round(v||0).toLocaleString('ko-KR'),won=v=>(v>0?'+':'')+num(v),cls=v=>v>0?'pos':v<0?'neg':'',pct=v=>(v*100).toFixed(1)+'%';
-const lossShare=Math.abs(O.target.profit/O.all.profit);
-document.getElementById('kpis').innerHTML=[['SK·K 편성',O.target.count+'건'],['SK·K 누적',won(O.target.profit)+'원','neg'],['SK·K 건당',won(O.target.avgProfit)+'원','neg'],['전체 손실 중 비중',pct(lossShare)],['SK·K 제외',won(O.other.profit)+'원','neg']].map(x=>`<div class="metric"><span>${x[0]}</span><b class="${x[2]||''}">${x[1]}</b></div>`).join('');
-function diagnosis(r){const t=r.target,o=r.other;if(t.count<3)return'표본부족';const severe=t.avgProfit<=-10000000||t.profit<=-50000000;if(severe&&o.count>=3&&o.avgProfit>0)return'SK·K 조합 이슈';if(severe&&o.count>=3&&o.avgProfit<=-5000000)return'PGM 공통 이슈';if(severe&&o.count>=3&&o.avgProfit<0)return'PGM 이슈 + SK·K 증폭';if(severe)return'SK·K 제한 / 타사 검증';if(t.avgProfit<0&&o.avgProfit>0)return'SK·K 성과 열위';if(t.avgProfit<0)return'조건부 승인';return'유지 검토'}
-const pgmRows=R.filter(r=>r.target.count>0).sort((a,b)=>a.target.profit-b.target.profit);const badge=d=>d.includes('조합')||d.includes('공통')||d.includes('제한')||d.includes('증폭')?'red':d.includes('열위')||d.includes('조건부')?'orange':d==='유지 검토'?'green':'gray';document.getElementById('pgm-body').innerHTML=pgmRows.map(r=>{const d=diagnosis(r);return`<tr><td>${r.pgm}</td><td>${r.target.count}</td><td class="${cls(r.target.profit)}">${won(r.target.profit)}</td><td class="${cls(r.target.avgProfit)}">${won(r.target.avgProfit)}</td><td>${r.other.count}</td><td class="${cls(r.other.profit)}">${won(r.other.profit)}</td><td class="${cls(r.other.avgProfit)}">${won(r.other.avgProfit)}</td><td><span class="badge ${badge(d)}">${d}</span></td></tr>`}).join('');
-const blocked=C.filter(x=>x.count>=3&&x.avgProfit<=-10000000&&x.winRate<=.25);document.getElementById('risk-body').innerHTML=blocked.map(x=>{const pre=Math.round((x.profit+x.cost)/x.count),cap=Math.max(0,Math.round(pre*.8));return`<tr><td>${x.home}</td><td>${x.pgm}</td><td>${x.count}</td><td>${pct(x.winRate)}</td><td class="neg">${won(x.profit)}</td><td class="neg">${won(x.avgProfit)}</td><td class="${cls(pre)}">${won(pre)}</td><td>${num(cap)}</td></tr>`}).join('');
-const policies=['전체','편성 불가','조건부 승인','유지 가능','신규·표본부족'];const counts=Object.fromEntries(policies.slice(1).map(p=>[p,F.filter(x=>x.policy===p)]));document.getElementById('future-kpis').innerHTML=[['예정 편성',F.length+'건'],['예정 PPL 비용',num(F.reduce((s,x)=>s+x.cost,0))+'원'],['편성 불가',counts['편성 불가'].length+'건','neg'],['조건부 승인',counts['조건부 승인'].length+'건'],['신규·표본부족',counts['신규·표본부족'].length+'건']].map(x=>`<div class="metric"><span>${x[0]}</span><b class="${x[2]||''}">${x[1]}</b></div>`).join('');
-function buttons(active){const el=document.getElementById('filter');el.innerHTML='';policies.forEach(p=>{const b=document.createElement('button');b.textContent=p+(p==='전체'?'':` ${counts[p].length}`);b.className=p===active?'active':'';b.onclick=()=>futureView(p);el.append(b)})}function futureView(p='전체'){buttons(p);const a=p==='전체'?F:F.filter(x=>x.policy===p);document.getElementById('future-body').innerHTML=a.map(x=>`<tr><td>${x.date}</td><td>${x.home}</td><td>${x.pgm}</td><td>${x.item}</td><td>${x.type}</td><td>${num(x.cost)}</td><td><span class="badge ${x.policy==='편성 불가'?'red':x.policy==='유지 가능'?'green':x.policy==='조건부 승인'?'orange':'gray'}">${x.policy}</span></td><td>${x.policyReason}</td></tr>`).join('')}futureView();
+function kpis(el,x){document.getElementById(el).innerHTML=[['편성 건수',x.count+'건'],['흑자 건수',x.wins+'건'],['흑자율',pct(x.winRate)],['누적 이익금',won(x.profit)+'원',cls(x.profit)],['건당 평균',won(x.avgProfit)+'원',cls(x.avgProfit)]].map(v=>`<div class="metric"><span>${v[0]}</span><b class="${v[2]||''}">${v[1]}</b></div>`).join('')}kpis('sk-kpis',O.sk);kpis('k-kpis',O.k);
+function diagnosis(s,o){if(s.count<3)return'표본부족';const severe=s.avgProfit<=-10000000&&s.winRate<=.25;if(severe&&o.count>=3&&o.avgProfit>0)return'채널×PGM 이슈';if(severe&&o.count>=3&&o.avgProfit<=-5000000)return'PGM 공통 이슈';if(severe&&o.count>=3&&o.avgProfit<0)return'PGM 이슈 + 채널 증폭';if(severe)return'편성 제한 / 타사 검증';if(s.avgProfit<0&&o.avgProfit>0)return'채널 성과 열위';if(s.avgProfit<0)return'조건부 승인';if(s.winRate>=.5)return'유지 검토';return'수익 변동 주의'}
+const badge=d=>d.includes('이슈')||d.includes('제한')||d.includes('증폭')?'red':d.includes('열위')||d.includes('조건부')||d.includes('주의')?'orange':d==='유지 검토'?'green':'gray';
+function pgmTable(el,key){const rows=R.filter(r=>r[key].count>0).sort((a,b)=>a[key].profit-b[key].profit);document.getElementById(el).innerHTML=rows.map(r=>{const s=r[key],d=diagnosis(s,r.other);return`<tr><td>${r.pgm}</td><td>${s.count}</td><td>${pct(s.winRate)}</td><td class="${cls(s.profit)}">${won(s.profit)}</td><td class="${cls(s.avgProfit)}">${won(s.avgProfit)}</td><td>${r.other.count}</td><td class="${cls(r.other.avgProfit)}">${won(r.other.avgProfit)}</td><td><span class="badge ${badge(d)}">${d}</span></td></tr>`}).join('');return rows}const skRows=pgmTable('sk-pgm','sk'),kRows=pgmTable('k-pgm','k');
+function riskTable(el,home){const a=C.filter(x=>x.home===home&&x.count>=3&&x.avgProfit<=-10000000&&x.winRate<=.25);document.getElementById(el).innerHTML=a.map(x=>{const pre=Math.round((x.profit+x.cost)/x.count),cap=Math.max(0,Math.round(pre*.8));return`<tr><td>${x.pgm}</td><td>${x.count}</td><td>${pct(x.winRate)}</td><td class="neg">${won(x.profit)}</td><td class="neg">${won(x.avgProfit)}</td><td class="${cls(pre)}">${won(pre)}</td><td>${num(cap)}</td></tr>`}).join('')}riskTable('sk-risk','SK');riskTable('k-risk','K');
+const statuses=['편성 불가','조건부 승인','유지 가능','신규·표본부족'];function futureBlock(home,prefix){const a=F.filter(x=>x.home===home),cost=a.reduce((s,x)=>s+x.cost,0),counts=Object.fromEntries(statuses.map(s=>[s,a.filter(x=>x.policy===s).length]));document.getElementById(prefix+'-future-kpis').innerHTML=[['예정 편성',a.length+'건'],['예정 비용',num(cost)+'원'],['편성 불가',counts['편성 불가']+'건','neg'],['조건부 승인',counts['조건부 승인']+'건'],['표본부족',counts['신규·표본부족']+'건']].map(v=>`<div class="metric"><span>${v[0]}</span><b class="${v[2]||''}">${v[1]}</b></div>`).join('');document.getElementById(prefix+'-future').innerHTML=a.map(x=>`<tr><td>${x.date}</td><td>${x.pgm}</td><td>${x.item}</td><td>${x.type}</td><td>${num(x.cost)}</td><td><span class="badge ${x.policy==='편성 불가'?'red':x.policy==='유지 가능'?'green':x.policy==='조건부 승인'?'orange':'gray'}">${x.policy}</span></td><td>${x.policyReason}</td></tr>`).join('')}futureBlock('SK','sk');futureBlock('K','k');
 const NS='http://www.w3.org/2000/svg',S=(t,a={},txt='')=>{const e=document.createElementNS(NS,t);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));if(txt)e.textContent=txt;return e},base=(el,w,h)=>{const s=S('svg',{viewBox:`0 0 ${w} ${h}`});el.replaceChildren(s);return s};
-function paired(el,items,labelKey,aKey,bKey){const w=1000,h=Math.max(300,items.length*48+50),m={l:140,r:140,t:18,b:30},vals=items.flatMap(x=>[x[aKey],x[bKey]]),min=Math.min(-1,...vals)*1.15,max=Math.max(1,...vals)*1.15,cw=w-m.l-m.r,row=(h-m.t-m.b)/items.length,svg=base(el,w,h),x=v=>m.l+(v-min)*cw/(max-min),zero=x(0);svg.append(S('line',{x1:zero,y1:m.t,x2:zero,y2:h-m.b,stroke:'#8c959f'}));items.forEach((d,i)=>{const y=m.t+i*row;svg.append(S('text',{x:m.l-10,y:y+row*.57,'text-anchor':'end',fill:'#424a53','font-size':'10'},d[labelKey]));[[aKey,'#cf222e',.18],[bKey,'#0969da',.54]].forEach(([k,c,o])=>{const v=d[k],xx=x(v);svg.append(S('rect',{x:Math.min(zero,xx),y:y+row*o,width:Math.max(1,Math.abs(xx-zero)),height:row*.24,rx:2,fill:c}));svg.append(S('text',{x:v>=0?xx+5:xx-5,y:y+row*(o+.19),'text-anchor':v>=0?'start':'end',fill:c,'font-size':'9'},won(v)));})});svg.append(S('text',{x:m.l,y:h-5,fill:'#cf222e','font-size':'10'},'■ SK·K'));svg.append(S('text',{x:m.l+70,y:h-5,fill:'#0969da','font-size':'10'},'■ 기타'));}
-function singleBar(el,items){const w=1000,h=280,m={l:140,r:140,t:20,b:25},vals=items.map(x=>x.value),min=Math.min(-1,...vals)*1.2,max=Math.max(1,...vals)*1.2,cw=w-m.l-m.r,row=(h-m.t-m.b)/items.length,svg=base(el,w,h),x=v=>m.l+(v-min)*cw/(max-min),zero=x(0);svg.append(S('line',{x1:zero,y1:m.t,x2:zero,y2:h-m.b,stroke:'#8c959f'}));items.forEach((d,i)=>{const y=m.t+i*row+row*.22,xx=x(d.value),c=d.value>=0?'#1a7f37':'#cf222e';svg.append(S('text',{x:m.l-10,y:y+row*.28,'text-anchor':'end',fill:'#424a53','font-size':'11'},d.name));svg.append(S('rect',{x:Math.min(zero,xx),y,width:Math.max(1,Math.abs(xx-zero)),height:row*.36,rx:3,fill:c}));svg.append(S('text',{x:d.value>=0?xx+7:xx-7,y:y+row*.28,'text-anchor':d.value>=0?'start':'end',fill:c,'font-size':'10','font-weight':'700'},won(d.value)));})}
-singleBar(document.getElementById('channel-chart'),[{name:'SK',value:O.sk.avgProfit},{name:'K',value:O.k.avgProfit},{name:'기타 홈쇼핑사',value:O.other.avgProfit}]);paired(document.getElementById('pgm-chart'),pgmRows.filter(r=>r.target.count>=3).slice(0,14).map(r=>({name:r.pgm,target:r.target.avgProfit,other:r.other.avgProfit})),'name','target','other');
+function paired(el,items,key,label){const w=1000,h=Math.max(300,items.length*46+50),m={l:140,r:145,t:18,b:30},vals=items.flatMap(r=>[r[key].avgProfit,r.other.avgProfit]),min=Math.min(-1,...vals)*1.15,max=Math.max(1,...vals)*1.15,cw=w-m.l-m.r,row=(h-m.t-m.b)/items.length,svg=base(el,w,h),x=v=>m.l+(v-min)*cw/(max-min),zero=x(0);svg.append(S('line',{x1:zero,y1:m.t,x2:zero,y2:h-m.b,stroke:'#8c959f'}));items.forEach((r,i)=>{const y=m.t+i*row,s=r[key];svg.append(S('text',{x:m.l-10,y:y+row*.57,'text-anchor':'end',fill:'#424a53','font-size':'10'},r.pgm));[[s.avgProfit,'#cf222e',.18],[r.other.avgProfit,'#0969da',.54]].forEach(([v,c,o])=>{const xx=x(v);svg.append(S('rect',{x:Math.min(zero,xx),y:y+row*o,width:Math.max(1,Math.abs(xx-zero)),height:row*.24,rx:2,fill:c}));svg.append(S('text',{x:v>=0?xx+5:xx-5,y:y+row*(o+.19),'text-anchor':v>=0?'start':'end',fill:c,'font-size':'9'},won(v)))})});svg.append(S('text',{x:m.l,y:h-5,fill:'#cf222e','font-size':'10'},'■ '+label));svg.append(S('text',{x:m.l+60,y:h-5,fill:'#0969da','font-size':'10'},'■ 비교군'));}
+paired(document.getElementById('sk-chart'),skRows.filter(r=>r.sk.count>=3).slice(0,14),'sk','SK');paired(document.getElementById('k-chart'),kRows.filter(r=>r.k.count>=3).slice(0,14),'k','K');
 </script></body></html>
