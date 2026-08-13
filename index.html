@@ -1,198 +1,241 @@
-# 2026년 PPL 본방 손익 보고서
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026년 PPL 본방 손익 보고서</title>
+  <style>
+    :root{--ink:#24292f;--heading:#1f2933;--muted:#6e7781;--line:#d8dee4;--soft:#f6f8fa;--blue:#0969da;--red:#cf222e;--green:#1a7f37;--purple:#8250df;--orange:#bc4c00}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;font-size:15px;line-height:1.65}
+    main{width:min(920px,calc(100% - 40px));margin:32px auto 80px}
+    h1{margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--line);color:var(--heading);font-size:30px;line-height:1.35;letter-spacing:-.7px}
+    h2{margin:38px 0 16px;padding-bottom:7px;border-bottom:1px solid var(--line);color:var(--heading);font-size:22px;line-height:1.4;letter-spacing:-.35px}
+    h3{margin:24px 0 10px;color:var(--heading);font-size:17px;letter-spacing:-.2px}
+    p{margin:8px 0}
+    .subtitle{margin:0;color:var(--muted);font-size:14px}
+    .meta{display:flex;flex-wrap:wrap;gap:7px 18px;margin:14px 0 0;padding:0;color:var(--muted);font-size:13px;list-style:none}
+    .meta strong{color:var(--ink);font-weight:600}
+    .toc{display:flex;flex-wrap:wrap;gap:8px 18px;margin:22px 0 0;padding:13px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px}
+    .toc a{color:var(--blue);text-decoration:none}
+    .toc a:hover{text-decoration:underline}
+    .lead{margin:26px 0 0;font-size:16px;line-height:1.75}
+    .summary{display:grid;grid-template-columns:repeat(5,1fr);margin:22px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .metric{padding:14px 10px 13px;border-right:1px solid var(--line)}
+    .metric:first-child{padding-left:0}.metric:last-child{border-right:0}
+    .metric span{display:block;color:var(--muted);font-size:12px}
+    .metric b{display:block;margin-top:3px;color:var(--heading);font-size:19px;letter-spacing:-.3px}
+    .metric.loss b{color:var(--red)}
+    .callout{margin:20px 0;padding:13px 15px;border-left:3px solid var(--blue);background:var(--soft);font-size:14px}
+    .callout strong{color:var(--heading)}
+    .section-intro{color:#424a53}
+    .table-wrap{overflow-x:auto;margin:12px 0 20px;border-top:1px solid var(--line)}
+    table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.55}
+    th,td{padding:10px 11px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+    th{background:#fff;color:var(--heading);font-weight:700}
+    th:first-child,td:first-child{text-align:left}
+    tbody tr:hover{background:#f8fafc}
+    tr.total{background:var(--soft);font-weight:700}
+    .pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}.none{color:#afb8c1}
+    .chart-block{margin:16px 0 26px;padding:18px 0 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:8px}
+    .chart-head h3{margin:0}.chart-head p{margin:3px 0 0;color:var(--muted);font-size:12px}
+    .chart{width:100%;min-height:300px}
+    .chart svg{display:block;width:100%;height:auto;overflow:visible}
+    .legend{display:flex;flex-wrap:wrap;gap:7px 15px;margin:5px 0 8px;color:var(--muted);font-size:12px}
+    .legend i{display:inline-block;width:9px;height:9px;margin-right:5px;border-radius:50%}
+    .selector{display:flex;flex-wrap:wrap;gap:6px;margin:13px 0 14px}
+    .selector button{padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#424a53;font:inherit;font-size:12px;cursor:pointer}
+    .selector button:hover{border-color:#8c959f}.selector button.active{border-color:var(--blue);background:#ddf4ff;color:#0550ae;font-weight:700}
+    .item-summary{display:flex;flex-wrap:wrap;gap:7px 18px;margin:0 0 8px;color:var(--muted);font-size:13px}
+    .item-summary strong{color:var(--heading)}
+    .notes{margin:10px 0 0;padding-left:20px}.notes li{margin:6px 0}
+    .footnote{margin-top:12px;color:var(--muted);font-size:12px}
+    footer{margin-top:42px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+    @media(max-width:760px){main{width:min(100% - 28px,920px);margin-top:20px}h1{font-size:25px}.summary{grid-template-columns:repeat(2,1fr)}.metric{border-bottom:1px solid var(--line)}.metric:nth-child(2n){border-right:0}.metric:last-child{border-bottom:0}.chart-head{display:block}.chart{min-height:240px}.selector{gap:5px}}
+    @media print{main{width:100%;margin:0}a{color:inherit}.toc{display:none}.selector button:not(.active){display:none}.chart-block,.table-wrap{break-inside:avoid}h2,h3{break-after:avoid}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>2026년 PPL 본방 손익 보고서</h1>
+    <p class="subtitle">전체 월별 요약 · PGM별 누적 손익 · PGM별 월별 손익 · PGM별 아이템 추세</p>
+    <ul class="meta">
+      <li>실적 기준일 <strong>2026년 8월 12일</strong></li>
+      <li>금액 단위 <strong>원</strong></li>
+      <li>손익 기준 <strong>원본 S열 이익금</strong></li>
+      <li>본방 판정 <strong>PPL PGM 입력 + 비용 5천만원 이상</strong></li>
+    </ul>
+    <nav class="toc" aria-label="목차">
+      <a href="#monthly">1. 전체 월별 본방 요약</a>
+      <a href="#pgm-total">2. PGM별 누적 손익</a>
+      <a href="#pgm-monthly">3. PGM별 월별 손익</a>
+      <a href="#pgm-item">4. PGM별 아이템 추세</a>
+    </nav>
+  </header>
 
-> **실적 기준일:** 2026년 8월 12일  
-> **본방 판정 기준:** PPL PGM(X열)이 입력되어 있고 PPL 비용(AB열)이 50,000,000원 이상인 방송  
-> **손익 기준:** 원본 S열 `이익금`  
-> **금액 단위:** 표와 그래프는 백만원, 별도 표기가 있는 경우 원
+  <p class="lead">2026년 본방 18건의 누적 주문금액은 <strong>4,069,722,727원</strong>, PPL 비용은 <strong>1,036,860,000원</strong>이며 누적 이익금은 <strong class="neg">-367,808,043원</strong>입니다. 손실의 74.1%가 6~7월에 집중됐고, PGM 기준으로는 <strong>인생의연장전</strong>의 누적 손실이 가장 큽니다.</p>
 
-## 1. 핵심 요약
+  <section class="summary" aria-label="핵심 지표">
+    <div class="metric"><span>본방 건수</span><b>18건</b></div>
+    <div class="metric"><span>주문금액</span><b>4,069,722,727원</b></div>
+    <div class="metric"><span>PPL 비용</span><b>1,036,860,000원</b></div>
+    <div class="metric loss"><span>누적 이익금</span><b>-367,808,043원</b></div>
+    <div class="metric loss"><span>누적 손익률</span><b>-9.0%</b></div>
+  </section>
 
-| 지표 | 실적 |
-|---|---:|
-| 본방 건수 | 18건 |
-| 주문금액 | 4,069.7백만원 |
-| PPL 비용 | 1,036.9백만원 |
-| 누적 이익금 | **-367.8백만원** |
-| 누적 손익률 | **-9.0%** |
+  <div class="callout"><strong>핵심 판단.</strong> 흑자 월은 3월(+20,963,341원)과 5월(+3,240,088원)뿐입니다. 아이템 기준으로는 올포만 누적 흑자(+10,820,268원)이며, 파라의 누적 손실(-283,489,976원)이 전체 손실의 77.1%를 차지합니다.</div>
 
-### 주요 확인사항
+  <section id="monthly">
+    <h2>1. 전체 월별 본방 요약</h2>
+    <p class="section-intro">월별 손익은 5월까지 보합권이었으나 6월부터 손실 폭이 커졌습니다. 7월은 2건 편성에도 월간 손실이 -135,700,308원으로 가장 컸습니다.</p>
+    <div class="table-wrap">
+      <table aria-label="전체 월별 본방 손익">
+        <thead><tr><th>월</th><th>본방 건수</th><th>주문금액(원)</th><th>PPL 비용(원)</th><th>이익금(원)</th><th>손익률</th></tr></thead>
+        <tbody>
+          <tr><td>1월</td><td>1</td><td>207,204,364</td><td>59,800,000</td><td class="neg">-7,590,160</td><td>-3.7%</td></tr>
+          <tr><td>2월</td><td>2</td><td>334,587,273</td><td>110,400,000</td><td class="neg">-44,154,021</td><td>-13.2%</td></tr>
+          <tr><td>3월</td><td>2</td><td>407,986,182</td><td>110,400,000</td><td class="pos">+20,963,341</td><td>+5.1%</td></tr>
+          <tr><td>4월</td><td>0</td><td class="none">—</td><td class="none">—</td><td class="none">—</td><td class="none">—</td></tr>
+          <tr><td>5월</td><td>5</td><td>1,336,513,091</td><td>300,130,000</td><td class="pos">+3,240,088</td><td>+0.2%</td></tr>
+          <tr><td>6월</td><td>4</td><td>716,959,091</td><td>225,430,000</td><td class="neg">-136,784,873</td><td>-19.1%</td></tr>
+          <tr><td>7월</td><td>2</td><td>473,972,727</td><td>116,250,000</td><td class="neg">-135,700,308</td><td>-28.6%</td></tr>
+          <tr><td>8월</td><td>2</td><td>592,500,000</td><td>114,450,000</td><td class="neg">-67,782,110</td><td>-11.4%</td></tr>
+          <tr class="total"><td>합계</td><td>18</td><td>4,069,722,727</td><td>1,036,860,000</td><td class="neg">-367,808,043</td><td>-9.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-block">
+      <div class="chart-head"><div><h3>월별 이익금 추세</h3><p>4월은 본방 실적이 없어 0으로 표시</p></div></div>
+      <div id="monthly-chart" class="chart" role="img" aria-label="월별 본방 이익금 추세선"></div>
+    </div>
+  </section>
 
-- 3월은 **+21.0백만원**, 5월은 **+3.2백만원**으로 월간 흑자를 기록했습니다.
-- 6월과 7월의 합산 손실은 **-272.5백만원**으로, 전체 누적 손실의 약 **74.1%**가 두 달에 집중되었습니다.
-- `인생의연장전`은 전체 18건 중 10건을 차지했으며 누적 손익은 **-340.2백만원**입니다.
-- PGM 누적 기준 흑자는 `썰록` **+52.7백만원**, `지킬박사` **+43.0백만원**입니다.
-- 본방 표기와 재방송 표기가 원본에 별도로 존재하지 않아, 이번 보고서는 PPL 비용 5천만원 이상 기준으로 본방을 판정했습니다.
+  <section id="pgm-total">
+    <h2>2. PGM별 누적 손익</h2>
+    <p class="section-intro">누적 흑자 PGM은 썰록과 지킬박사입니다. 인생의연장전은 10건으로 편성 횟수가 가장 많고, 누적 이익금은 -340,153,574원으로 전체 손실의 대부분을 차지합니다.</p>
+    <div class="table-wrap">
+      <table aria-label="PGM별 누적 손익">
+        <thead><tr><th>PPL PGM</th><th>건수</th><th>주문금액(원)</th><th>PPL 비용(원)</th><th>이익금(원)</th><th>손익률</th><th>건당 평균(원)</th></tr></thead>
+        <tbody>
+          <tr><td>인생의연장전</td><td>10</td><td>2,315,952,364</td><td>594,000,000</td><td class="neg">-340,153,574</td><td>-14.7%</td><td>-34,015,357</td></tr>
+          <tr><td>지킬박사</td><td>2</td><td>630,890,909</td><td>101,200,000</td><td class="pos">+43,028,427</td><td>+6.8%</td><td>+21,514,214</td></tr>
+          <tr><td>나비효과</td><td>2</td><td>326,536,364</td><td>131,260,000</td><td class="neg">-55,406,336</td><td>-17.0%</td><td>-27,703,168</td></tr>
+          <tr><td>다큐플러스</td><td>1</td><td>247,163,636</td><td>54,000,000</td><td class="neg">-13,542,056</td><td>-5.5%</td><td>-13,542,056</td></tr>
+          <tr><td>질병의법칙</td><td>1</td><td>104,468,182</td><td>55,200,000</td><td class="neg">-26,776,056</td><td>-25.6%</td><td>-26,776,056</td></tr>
+          <tr><td>몸신의탄생</td><td>1</td><td>152,803,636</td><td>50,600,000</td><td class="neg">-27,625,639</td><td>-18.1%</td><td>-27,625,639</td></tr>
+          <tr><td>썰록</td><td>1</td><td>291,907,636</td><td>50,600,000</td><td class="pos">+52,667,191</td><td>+18.0%</td><td>+52,667,191</td></tr>
+          <tr class="total"><td>합계</td><td>18</td><td>4,069,722,727</td><td>1,036,860,000</td><td class="neg">-367,808,043</td><td>-9.0%</td><td>-20,433,780</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-block">
+      <div class="chart-head"><div><h3>PGM별 누적 이익금</h3><p>누적 손실 규모가 큰 순서로 표시</p></div></div>
+      <div id="pgm-bar" class="chart" role="img" aria-label="PGM별 누적 이익금 막대그래프"></div>
+    </div>
+  </section>
 
----
+  <section id="pgm-monthly">
+    <h2>3. PGM별 월별 손익</h2>
+    <p class="section-intro">표는 모든 PGM을 한 번에 비교하고, 아래 추세선은 PGM을 선택해 월별 흐름을 자세히 볼 수 있도록 구성했습니다.</p>
+    <div class="table-wrap">
+      <table aria-label="PGM별 월간 이익금">
+        <thead><tr><th>월</th><th>나비효과</th><th>다큐플러스</th><th>몸신의탄생</th><th>썰록</th><th>인생의연장전</th><th>지킬박사</th><th>질병의법칙</th></tr></thead>
+        <tbody>
+          <tr><td>1월</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="neg">-7,590,160</td><td>—</td><td>—</td></tr>
+          <tr><td>2월</td><td>—</td><td>—</td><td class="neg">-27,625,639</td><td>—</td><td class="neg">-16,528,382</td><td>—</td><td>—</td></tr>
+          <tr><td>3월</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="neg">-6,385,309</td><td class="pos">+27,348,650</td><td>—</td></tr>
+          <tr><td>4월</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>5월</td><td class="neg">-19,116,447</td><td>—</td><td>—</td><td class="pos">+52,667,191</td><td class="neg">-45,990,434</td><td class="pos">+15,679,777</td><td>—</td></tr>
+          <tr><td>6월</td><td class="neg">-36,289,890</td><td>—</td><td>—</td><td>—</td><td class="neg">-73,718,928</td><td>—</td><td class="neg">-26,776,056</td></tr>
+          <tr><td>7월</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="neg">-135,700,308</td><td>—</td><td>—</td></tr>
+          <tr><td>8월</td><td>—</td><td class="neg">-13,542,056</td><td>—</td><td>—</td><td class="neg">-54,240,054</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-block">
+      <div class="chart-head"><div><h3 id="pgm-month-title">인생의연장전 월별 이익금</h3><p>버튼을 눌러 PGM 변경</p></div></div>
+      <div id="pgm-month-selector" class="selector" aria-label="PGM 선택"></div>
+      <div id="pgm-month-chart" class="chart" role="img" aria-label="선택한 PGM의 월별 이익금 추세선"></div>
+    </div>
+  </section>
 
-## 2. 전체 월별 본방 요약
+  <section id="pgm-item">
+    <h2>4. PGM별 아이템 추세</h2>
+    <p class="section-intro">같은 PGM 안에서도 아이템에 따라 손익 방향이 크게 달랐습니다. PGM을 선택하면 해당 프로그램에 편성된 아이템의 월별 이익금 추세와 실적표가 함께 바뀝니다.</p>
+    <div class="chart-block">
+      <div class="chart-head"><div><h3 id="item-title">인생의연장전 · 아이템별 월간 이익금</h3><p>방송이 없는 월은 선을 연결하지 않음</p></div></div>
+      <div id="item-selector" class="selector" aria-label="아이템 추세 PGM 선택"></div>
+      <div id="item-summary" class="item-summary"></div>
+      <div id="item-chart" class="chart" role="img" aria-label="선택한 PGM의 아이템별 월간 이익금 추세선"></div>
+      <div id="item-legend" class="legend"></div>
+    </div>
+    <div class="table-wrap">
+      <table aria-label="선택한 PGM의 아이템별 월간 이익금">
+        <thead id="item-table-head"></thead>
+        <tbody id="item-table-body"></tbody>
+      </table>
+    </div>
+    <div class="callout" id="item-insight"><strong>인생의연장전.</strong> 7월 손실은 파라 -62,245,762원과 아세로라 -73,454,545원이 동시에 발생해 월간 -135,700,308원까지 확대됐습니다.</div>
+  </section>
 
-### 월별 손익표
+  <section>
+    <h2>검토 의견</h2>
+    <ol class="notes">
+      <li><strong>파라</strong>는 4개 PGM에서 8건 편성됐고 누적 -283,489,976원입니다. PGM·홈쇼핑 채널 조합별 손익분기 주문금액을 먼저 재설정할 필요가 있습니다.</li>
+      <li><strong>인생의연장전</strong>은 5월 이후 손실 폭이 확대됐습니다. 아이템만이 아니라 채널과 시작 시간대까지 함께 분리해 원인을 확인해야 합니다.</li>
+      <li><strong>올포</strong>는 인생의연장전에서 -16,528,382원, 지킬박사에서 +27,348,650원으로 결과가 반대입니다. 아이템 단독 평가보다 PGM 조합 평가가 적합합니다.</li>
+      <li>썰록·지킬박사는 흑자지만 표본이 각각 1건과 2건이므로 동일 조건의 추가 실적을 확인한 뒤 확대 여부를 판단하는 편이 안전합니다.</li>
+    </ol>
+  </section>
 
-| 월 | 본방 건수 | 주문금액 | PPL 비용 | 이익금 | 손익률 |
-|---|---:|---:|---:|---:|---:|
-| 1월 | 1 | 207.2 | 59.8 | -7.6 | -3.7% |
-| 2월 | 2 | 334.6 | 110.4 | -44.2 | -13.2% |
-| 3월 | 2 | 408.0 | 110.4 | **+21.0** | **+5.1%** |
-| 4월 | 0 | — | — | — | — |
-| 5월 | 5 | 1,336.5 | 300.1 | **+3.2** | **+0.2%** |
-| 6월 | 4 | 717.0 | 225.4 | **-136.8** | **-19.1%** |
-| 7월 | 2 | 474.0 | 116.3 | **-135.7** | **-28.6%** |
-| 8월 | 2 | 592.5 | 114.5 | **-67.8** | **-11.4%** |
-| **합계** | **18** | **4,069.7** | **1,036.9** | **-367.8** | **-9.0%** |
+  <footer>
+    원본: 방송현황종합 2026 · 검증: PPL본방_PGM별_월별추세_보고서.xlsx와 상세 18건 및 월별·PGM별 합계 교차 확인<br>
+    판정 기준: 본방송·재방송 표기가 없는 행 중 X열 PPL PGM이 입력되고 AB열 PPL 비용이 50,000,000원 이상인 건을 본방으로 분류했습니다.
+  </footer>
+</main>
 
-### 월별 이익금 추세
-
-```mermaid
-xychart-beta
-    title "월별 PPL 본방 이익금 추세"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "이익금(백만원)" -150 --> 60
-    line [-7.6, -44.2, 21.0, 0, 3.2, -136.8, -135.7, -67.8]
-```
-
-> 4월은 본방 실적이 없어 그래프에서 0으로 표시했습니다.
-
----
-
-## 3. PGM별 누적 손익
-
-### PGM별 누적 손익표
-
-| PPL PGM | 본방 건수 | 주문금액 | PPL 비용 | 누적 이익금 | 손익률 | 건당 평균 이익금 |
-|---|---:|---:|---:|---:|---:|---:|
-| 인생의연장전 | 10 | 2,316.0 | 594.0 | **-340.2** | -14.7% | -34.0 |
-| 지킬박사 | 2 | 630.9 | 101.2 | **+43.0** | +6.8% | +21.5 |
-| 나비효과 | 2 | 326.5 | 131.3 | **-55.4** | -17.0% | -27.7 |
-| 다큐플러스 | 1 | 247.2 | 54.0 | **-13.5** | -5.5% | -13.5 |
-| 질병의법칙 | 1 | 104.5 | 55.2 | **-26.8** | -25.6% | -26.8 |
-| 몸신의탄생 | 1 | 152.8 | 50.6 | **-27.6** | -18.1% | -27.6 |
-| 썰록 | 1 | 291.9 | 50.6 | **+52.7** | +18.0% | +52.7 |
-| **합계** | **18** | **4,069.7** | **1,036.9** | **-367.8** | **-9.0%** | **-20.4** |
-
-### PGM별 누적 이익금 비교
-
-```mermaid
-xychart-beta
-    title "PGM별 누적 이익금"
-    x-axis ["인생연장", "지킬박사", "나비효과", "다큐+", "질병법칙", "몸신탄생", "썰록"]
-    y-axis "이익금(백만원)" -360 --> 80
-    bar [-340.2, 43.0, -55.4, -13.5, -26.8, -27.6, 52.7]
-```
-
-### PGM별 판단
-
-| 구분 | PGM | 판단 |
-|---|---|---|
-| 수익 유지 검토 | 썰록, 지킬박사 | 누적 이익과 손익률이 모두 플러스입니다. 추가 편성 시 재현 가능성 확인이 필요합니다. |
-| 집중 개선 필요 | 인생의연장전 | 방송 건수가 가장 많고 누적 손실 규모도 가장 큽니다. 아이템·채널·편성 조건별 세부 분리가 우선입니다. |
-| 손실 구조 점검 | 나비효과, 질병의법칙, 몸신의탄생 | 건당 손실이 약 26.8~27.7백만원으로 유사합니다. PPL비 회수 가능한 주문금액 기준을 다시 설정할 필요가 있습니다. |
-| 추가 관찰 | 다큐플러스 | 실적이 1건뿐이므로 단일 결과만으로 확대·축소 판단하기 어렵습니다. |
-
----
-
-## 4. PGM별 월별 손익
-
-### PGM별 월간 이익금표
-
-| 월 | 나비효과 | 다큐플러스 | 몸신의탄생 | 썰록 | 인생의연장전 | 지킬박사 | 질병의법칙 |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| 1월 | — | — | — | — | -7.6 | — | — |
-| 2월 | — | — | -27.6 | — | -16.5 | — | — |
-| 3월 | — | — | — | — | -6.4 | +27.3 | — |
-| 4월 | — | — | — | — | — | — | — |
-| 5월 | -19.1 | — | — | +52.7 | -46.0 | +15.7 | — |
-| 6월 | -36.3 | — | — | — | -73.7 | — | -26.8 |
-| 7월 | — | — | — | — | -135.7 | — | — |
-| 8월 | — | -13.5 | — | — | -54.2 | — | — |
-
-> 표의 `—`는 손익 0원이 아니라 해당 월에 해당 PGM 본방이 없었음을 의미합니다. 아래 그래프에서는 월간 흐름을 동일한 축으로 보여주기 위해 방송이 없는 월을 0으로 표시했습니다.
-
-### 인생의연장전 월별 손익
-
-```mermaid
-xychart-beta
-    title "인생의연장전 월별 이익금"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "백만원" -150 --> 10
-    line [-7.6, -16.5, -6.4, 0, -46.0, -73.7, -135.7, -54.2]
-```
-
-### 지킬박사 월별 손익
-
-```mermaid
-xychart-beta
-    title "지킬박사 월별 이익금"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "백만원" -10 --> 35
-    line [0, 0, 27.3, 0, 15.7, 0, 0, 0]
-```
-
-### 나비효과 월별 손익
-
-```mermaid
-xychart-beta
-    title "나비효과 월별 이익금"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "백만원" -40 --> 10
-    line [0, 0, 0, 0, -19.1, -36.3, 0, 0]
-```
-
-### 다큐플러스 월별 손익
-
-```mermaid
-xychart-beta
-    title "다큐플러스 월별 이익금"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "백만원" -20 --> 5
-    line [0, 0, 0, 0, 0, 0, 0, -13.5]
-```
-
-### 질병의법칙 월별 손익
-
-```mermaid
-xychart-beta
-    title "질병의법칙 월별 이익금"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "백만원" -30 --> 5
-    line [0, 0, 0, 0, 0, -26.8, 0, 0]
-```
-
-### 몸신의탄생 월별 손익
-
-```mermaid
-xychart-beta
-    title "몸신의탄생 월별 이익금"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "백만원" -30 --> 5
-    line [0, -27.6, 0, 0, 0, 0, 0, 0]
-```
-
-### 썰록 월별 손익
-
-```mermaid
-xychart-beta
-    title "썰록 월별 이익금"
-    x-axis ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"]
-    y-axis "백만원" -10 --> 60
-    line [0, 0, 0, 0, 52.7, 0, 0, 0]
-```
-
----
-
-## 5. 결론 및 검토 방향
-
-1. `인생의연장전`은 월별 손실 폭이 5월부터 확대됐고 7월에 **-135.7백만원**으로 가장 큰 손실을 기록했습니다. 방송 횟수 축소 여부보다 먼저 아이템과 홈쇼핑 채널별 손익을 분리해 원인을 확인해야 합니다.
-2. 6~7월 손실 집중의 원인이 PPL비 상승, 주문금액 감소, 아이템 수익성 저하 중 어디에서 발생했는지 세부 분해가 필요합니다.
-3. `썰록`과 `지킬박사`는 흑자 사례이나 표본이 각각 1건과 2건이므로, 동일 조건의 추가 편성 결과를 누적한 뒤 확대 여부를 판단하는 것이 적절합니다.
-4. 신규 본방 편성 시에는 PPL 비용만으로 판단하지 않고 `예상 주문금액 → 예상 이익금 → 손익분기 주문금액`을 사전에 산출하는 운영 기준이 필요합니다.
-
----
-
-### 산출 기준
-
-- 원본: `방송현황종합 2026` 시트
-- 집계 대상: 2026년 1월 1일~8월 12일
-- 본방 조건: PPL PGM 입력 및 PPL 비용 50,000,000원 이상
-- 손익 항목: 이익금(S열)
-- 검증: `PPL본방_PGM별_월별추세_보고서.xlsx`와 상세 18건, 월별·PGM별 합계를 교차 검증함
+<script>
+  const months=['1월','2월','3월','4월','5월','6월','7월','8월'];
+  const pgmMonthly={
+    '인생의연장전':[-7590160,-16528382,-6385309,null,-45990434,-73718928,-135700308,-54240054],
+    '지킬박사':[null,null,27348650,null,15679777,null,null,null],
+    '나비효과':[null,null,null,null,-19116447,-36289890,null,null],
+    '다큐플러스':[null,null,null,null,null,null,null,-13542056],
+    '질병의법칙':[null,null,null,null,null,-26776056,null,null],
+    '몸신의탄생':[null,-27625639,null,null,null,null,null,null],
+    '썰록':[null,null,null,null,52667191,null,null,null]
+  };
+  const itemData={
+    '인생의연장전':{
+      items:{'맥주효모':[-7590160,null,null,null,null,null,null,null],'올포':[null,-16528382,null,null,null,null,null,null],'알파':[null,null,-6385309,null,null,null,null,null],'아세로라':[null,null,null,null,-12139760,null,-73454545,null],'파라':[null,null,null,null,-33850674,-73718928,-62245762,-54240054]},
+      insight:'<strong>인생의연장전.</strong> 7월 손실은 파라 -62,245,762원과 아세로라 -73,454,545원이 동시에 발생해 월간 -135,700,308원까지 확대됐습니다.'
+    },
+    '지킬박사':{items:{'올포':[null,null,27348650,null,null,null,null,null],'아세로라':[null,null,null,null,15679777,null,null,null]},insight:'<strong>지킬박사.</strong> 올포와 아세로라가 각각 +27,348,650원, +15,679,777원으로 두 아이템 모두 흑자를 기록했습니다.'},
+    '나비효과':{items:{'파라':[null,null,null,null,-19116447,null,null,null],'알파':[null,null,null,null,null,-36289890,null,null]},insight:'<strong>나비효과.</strong> 파라와 알파 모두 손실이었고, 6월 알파 손실(-36,289,890원)이 5월 파라(-19,116,447원)보다 컸습니다.'},
+    '다큐플러스':{items:{'파라':[null,null,null,null,null,null,null,-13542056]},insight:'<strong>다큐플러스.</strong> 8월 파라 1건이 -13,542,056원을 기록했습니다. 추가 표본 전에는 추세로 단정하기 어렵습니다.'},
+    '질병의법칙':{items:{'파라':[null,null,null,null,null,-26776056,null,null]},insight:'<strong>질병의법칙.</strong> 6월 파라 1건이 -26,776,056원을 기록했습니다.'},
+    '몸신의탄생':{items:{'알파':[null,-27625639,null,null,null,null,null,null]},insight:'<strong>몸신의탄생.</strong> 2월 알파 1건이 -27,625,639원을 기록했습니다.'},
+    '썰록':{items:{'알파':[null,null,null,null,52667191,null,null,null]},insight:'<strong>썰록.</strong> 5월 알파 1건이 +52,667,191원으로 전체 단일 방송 중 가장 큰 흑자를 기록했습니다.'}
+  };
+  const colors=['#0969da','#8250df','#1a7f37','#bc4c00','#cf222e','#0a7b83'];
+  const NS='http://www.w3.org/2000/svg';
+  const S=(tag,attrs={},txt='')=>{const e=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));if(txt)e.textContent=txt;return e};
+  const fmt=v=>(v>0?'+':'')+Math.round(v).toLocaleString('ko-KR')+'원';
+  function svgBase(el,w=920,h=300){const svg=S('svg',{viewBox:`0 0 ${w} ${h}`,'aria-hidden':'true'});el.replaceChildren(svg);return svg}
+  function axes(svg,labels,min,max,w,h,m){const cw=w-m.l-m.r,ch=h-m.t-m.b,x=i=>m.l+i*cw/(labels.length-1),y=v=>m.t+(max-v)*ch/(max-min);for(let i=0;i<=5;i++){const v=min+(max-min)*i/5,yy=y(v);svg.append(S('line',{x1:m.l,y1:yy,x2:w-m.r,y2:yy,stroke:'#d8dee4','stroke-dasharray':'3 4'}));svg.append(S('text',{x:m.l-8,y:yy+4,'text-anchor':'end',fill:'#6e7781','font-size':'10'},Math.round(v).toLocaleString('ko-KR')))}labels.forEach((l,i)=>svg.append(S('text',{x:x(i),y:h-13,'text-anchor':'middle',fill:'#6e7781','font-size':'11'},l)));if(min<0&&max>0){const yy=y(0);svg.append(S('line',{x1:m.l,y1:yy,x2:w-m.r,y2:yy,stroke:'#8c959f','stroke-width':'1.2'}))}return{x,y}}
+  function singleLine(el,labels,values,color='#0969da',fixedRange=null){const clean=values.filter(v=>v!==null),lo=fixedRange?fixedRange[0]:Math.min(-10000000,...clean),hi=fixedRange?fixedRange[1]:Math.max(10000000,...clean),pad=Math.max(8000000,(hi-lo)*.12),step=10000000,min=Math.floor((lo-pad)/step)*step,max=Math.ceil((hi+pad)/step)*step,w=920,h=300,m={l:105,r:20,t:18,b:40},svg=svgBase(el,w,h),{x,y}=axes(svg,labels,min,max,w,h,m);let run=[];const flush=()=>{if(run.length>1)svg.append(S('polyline',{points:run.map(d=>`${x(d.i)},${y(d.v)}`).join(' '),fill:'none',stroke:color,'stroke-width':'2.5','stroke-linecap':'round','stroke-linejoin':'round'}));run=[]};values.forEach((v,i)=>{if(v===null){flush();return}run.push({i,v})});flush();values.forEach((v,i)=>{if(v===null)return;const c=S('circle',{cx:x(i),cy:y(v),r:4.5,fill:color,stroke:'#fff','stroke-width':'2'});c.append(S('title',{},`${labels[i]} ${fmt(v)}`));svg.append(c);svg.append(S('text',{x:x(i),y:y(v)-10,'text-anchor':'middle',fill:v>=0?'#1a7f37':'#cf222e','font-size':'10','font-weight':'700'},Math.round(v).toLocaleString('ko-KR')))})}
+  function multiLine(el,labels,series){const vals=series.flatMap(s=>s.values.filter(v=>v!==null)),lo=Math.min(-10000000,...vals),hi=Math.max(10000000,...vals),pad=Math.max(8000000,(hi-lo)*.12),step=10000000,min=Math.floor((lo-pad)/step)*step,max=Math.ceil((hi+pad)/step)*step,w=920,h=320,m={l:105,r:20,t:18,b:40},svg=svgBase(el,w,h),{x,y}=axes(svg,labels,min,max,w,h,m);series.forEach((s,si)=>{let run=[];const flush=()=>{if(run.length>1)svg.append(S('polyline',{points:run.map(d=>`${x(d.i)},${y(d.v)}`).join(' '),fill:'none',stroke:s.color,'stroke-width':'2.4','stroke-linecap':'round','stroke-linejoin':'round'}));run=[]};s.values.forEach((v,i)=>{if(v===null){flush();return}run.push({i,v})});flush();s.values.forEach((v,i)=>{if(v===null)return;const c=S('circle',{cx:x(i),cy:y(v),r:4.2,fill:s.color,stroke:'#fff','stroke-width':'1.8'});c.append(S('title',{},`${s.name} · ${labels[i]} ${fmt(v)}`));svg.append(c)})})}
+  function barChart(el,items){const w=920,h=330,m={l:115,r:98,t:16,b:36},min=-370000000,max=80000000,cw=w-m.l-m.r,row=(h-m.t-m.b)/items.length,svg=svgBase(el,w,h),x=v=>m.l+(v-min)*cw/(max-min),x0=x(0);[-300000000,-200000000,-100000000,0].forEach(v=>{const xx=x(v);svg.append(S('line',{x1:xx,y1:m.t,x2:xx,y2:h-m.b,stroke:v===0?'#8c959f':'#d8dee4','stroke-dasharray':v===0?'0':'3 4'}));svg.append(S('text',{x:xx,y:h-9,'text-anchor':'middle',fill:'#6e7781','font-size':'9'},v.toLocaleString('ko-KR')))});items.forEach((d,i)=>{const yy=m.t+i*row+row*.19,bh=row*.58,start=Math.min(x(d.v),x0),width=Math.abs(x(d.v)-x0),color=d.v>=0?'#1a7f37':'#cf222e';svg.append(S('text',{x:m.l-10,y:yy+bh*.72,'text-anchor':'end',fill:'#424a53','font-size':'11','font-weight':'600'},d.n));const r=S('rect',{x:start,y:yy,width:Math.max(width,1),height:bh,rx:3,fill:color,opacity:.88});r.append(S('title',{},`${d.n} ${fmt(d.v)}`));svg.append(r);svg.append(S('text',{x:d.v>=0?x(d.v)+7:x(d.v)-7,y:yy+bh*.72,'text-anchor':d.v>=0?'start':'end',fill:color,'font-size':'10','font-weight':'700'},Math.round(d.v).toLocaleString('ko-KR')))})}
+  function buttons(el,names,active,onClick){el.replaceChildren(...names.map(name=>{const b=document.createElement('button');b.type='button';b.textContent=name;b.className=name===active?'active':'';b.onclick=()=>onClick(name);return b}))}
+  function renderPgmMonth(name){document.getElementById('pgm-month-title').textContent=`${name} 월별 이익금`;buttons(document.getElementById('pgm-month-selector'),Object.keys(pgmMonthly),name,renderPgmMonth);singleLine(document.getElementById('pgm-month-chart'),months,pgmMonthly[name])}
+  function renderItem(name){const obj=itemData[name],entries=Object.entries(obj.items),series=entries.map(([n,v],i)=>({name:n,values:v,color:colors[i%colors.length]}));document.getElementById('item-title').textContent=`${name} · 아이템별 월간 이익금`;buttons(document.getElementById('item-selector'),Object.keys(itemData),name,renderItem);const total=entries.reduce((a,[,vs])=>a+vs.reduce((x,v)=>x+(v||0),0),0),count=entries.reduce((a,[,vs])=>a+vs.filter(v=>v!==null).length,0);document.getElementById('item-summary').innerHTML=`<span>편성 <strong>${count}건</strong></span><span>아이템 <strong>${entries.length}종</strong></span><span>누적 이익금 <strong class="${total>=0?'pos':'neg'}">${fmt(total)}</strong></span>`;multiLine(document.getElementById('item-chart'),months,series);document.getElementById('item-legend').innerHTML=series.map(s=>`<span><i style="background:${s.color}"></i>${s.name}</span>`).join('');document.getElementById('item-table-head').innerHTML='<tr><th>월</th>'+entries.map(([n])=>`<th>${n}</th>`).join('')+'</tr>';document.getElementById('item-table-body').innerHTML=months.map((m,mi)=>'<tr><td>'+m+'</td>'+entries.map(([,vs])=>{const v=vs[mi];return v===null?'<td class="none">—</td>':`<td class="${v>=0?'pos':'neg'}">${fmt(v)}</td>`}).join('')+'</tr>').join('')+'<tr class="total"><td>누적</td>'+entries.map(([,vs])=>{const v=vs.reduce((a,x)=>a+(x||0),0);return `<td class="${v>=0?'pos':'neg'}">${fmt(v)}</td>`}).join('')+'</tr>';document.getElementById('item-insight').innerHTML=obj.insight}
+  singleLine(document.getElementById('monthly-chart'),months,[-7590160,-44154021,20963341,0,3240088,-136784873,-135700308,-67782110],'#0969da',[-160000000,60000000]);
+  barChart(document.getElementById('pgm-bar'),[{n:'인생의연장전',v:-340153574},{n:'나비효과',v:-55406336},{n:'몸신의탄생',v:-27625639},{n:'질병의법칙',v:-26776056},{n:'다큐플러스',v:-13542056},{n:'지킬박사',v:43028427},{n:'썰록',v:52667191}]);
+  renderPgmMonth('인생의연장전');
+  renderItem('인생의연장전');
+</script>
+</body>
+</html>
